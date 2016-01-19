@@ -3,6 +3,7 @@ package com.ramzcalender;
 import com.ramzcalender.listener.CalenderListener;
 import com.ramzcalender.utils.AppController;
 import com.ramzcalender.utils.CalUtil;
+import com.ramzcalender.utils.ViewUtils;
 
 import org.joda.time.LocalDateTime;
 import org.joda.time.Weeks;
@@ -53,8 +54,12 @@ public class RWeekCalendar extends Fragment {
     public static String ARGUMENT_CURRENT_DATE_BACKGROUND = "bg:current:bg";
     public static String ARGUMENT_CALENDER_BACKGROUND_COLOR = "bg:cal";
     public static String ARGUMENT_NOW_BACKGROUND = "bg:now";
-    public static String ARGUMENT_PRIMARY_TEXT_COLOR = "bg:primary";
-    public static String ARGUMENT_SECONDARY_TEXT_COLOR = "bg:secondary";
+    public static String ARGUMENT_PRIMARY_TEXT_COLOR = "primary:text:color";
+    public static String ARGUMENT_DAY_TEXT_SIZE = "primary:day:size";
+    public static String ARGUMENT_DAY_TEXT_STYLE = "day:text:style";
+    public static String ARGUMENT_SECONDARY_TEXT_COLOR = "secondary:text:color";
+    public static String ARGUMENT_SECONDARY_TEXT_SIZE = "secondary:text:size";
+    public static String ARGUMENT_SECONDARY_TEXT_STYLE = "secondary:text:style";
     public static String ARGUMENT_WEEK_COUNT = "week:count";
     public static String ARGUMENT_DISPLAY_DATE_PICKER = "display:date:picker";
 
@@ -63,23 +68,24 @@ public class RWeekCalendar extends Fragment {
     public static String PACKAGE_NAME_VALUE = "com.ramzcalender";
 
     LocalDateTime mStartDate, mSelectedDate;
-    boolean mDisplayDatePicker = true;
-
     TextView mMonthView, mNowView, mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv, mThursdayTv;
+
     TextView mFridayTv, mSaturdayTv;
     ViewPager mViewPager;
     LinearLayout mBackground;
     ViewGroup mFrameDatePicker;
-
     CalenderListener mCalenderListener;
 
     private static RWeekCalendar sWeekCalendarInstance;
-    CalenderAdapter mAdapter;
 
+    CalenderAdapter mAdapter;
+    boolean mDisplayDatePicker = true;
     //initial values of calender property
     String mSelectorDateIndicatorValue = "bg_red";
     int mCurrentDateIndicatorValue = Color.BLACK;
     int mPrimaryTextColor = Color.WHITE;
+    int mPrimaryTextSize;
+    int mPrimaryTextStyle;
     int mWeekCount = 53;//one year
 
     @Override
@@ -193,9 +199,6 @@ public class RWeekCalendar extends Fragment {
     }
 
     private void handleCustomizationArguments() {
-        /**
-         * Checking for any customization values
-         */
         if (getArguments().containsKey(ARGUMENT_CALENDER_BACKGROUND_COLOR)) {
             mBackground.setBackgroundColor(getArguments().getInt(ARGUMENT_CALENDER_BACKGROUND_COLOR));
         }
@@ -213,6 +216,12 @@ public class RWeekCalendar extends Fragment {
             mMonthView.setTextColor(getArguments().getInt(ARGUMENT_PRIMARY_TEXT_COLOR));
             mPrimaryTextColor = getArguments().getInt(ARGUMENT_PRIMARY_TEXT_COLOR);
         }
+        if (getArguments().containsKey(ARGUMENT_DAY_TEXT_SIZE)) {
+            mPrimaryTextSize = getArguments().getInt(ARGUMENT_DAY_TEXT_SIZE);
+        }
+        if (getArguments().containsKey(ARGUMENT_DAY_TEXT_STYLE)) {
+            mPrimaryTextStyle = getArguments().getInt(ARGUMENT_DAY_TEXT_STYLE);
+        }
         if (getArguments().containsKey(ARGUMENT_SECONDARY_TEXT_COLOR)) {
             mNowView.setTextColor(getArguments().getInt(ARGUMENT_SECONDARY_TEXT_COLOR));
             mSundayTv.setTextColor(getArguments().getInt(ARGUMENT_SECONDARY_TEXT_COLOR));
@@ -222,6 +231,16 @@ public class RWeekCalendar extends Fragment {
             mThursdayTv.setTextColor(getArguments().getInt(ARGUMENT_SECONDARY_TEXT_COLOR));
             mFridayTv.setTextColor(getArguments().getInt(ARGUMENT_SECONDARY_TEXT_COLOR));
             mSaturdayTv.setTextColor(getArguments().getInt(ARGUMENT_SECONDARY_TEXT_COLOR));
+        }
+        if (getArguments().containsKey(ARGUMENT_SECONDARY_TEXT_SIZE)) {
+            int secondaryTextSize = getArguments().getInt(ARGUMENT_SECONDARY_TEXT_SIZE);
+            ViewUtils.setTextSize(secondaryTextSize, mNowView, mSundayTv, mMondayTv, mTuesdayTv,
+                    mWednesdayTv, mThursdayTv, mFridayTv, mSaturdayTv);
+        }
+        if (getArguments().containsKey(ARGUMENT_SECONDARY_TEXT_STYLE)) {
+            int secondaryTextStyle = getArguments().getInt(ARGUMENT_SECONDARY_TEXT_STYLE);
+            ViewUtils.setTextType(secondaryTextStyle, mNowView, mSundayTv, mMondayTv, mTuesdayTv,
+                    mWednesdayTv, mThursdayTv, mFridayTv, mSaturdayTv);
         }
         if (getArguments().containsKey(ARGUMENT_DISPLAY_DATE_PICKER)) {
             mDisplayDatePicker = getArguments().getBoolean(ARGUMENT_DISPLAY_DATE_PICKER);
@@ -236,6 +255,7 @@ public class RWeekCalendar extends Fragment {
                     , "drawable"
                     , PACKAGE_NAME_VALUE));
         }
+
     }
 
     /**
@@ -284,7 +304,13 @@ public class RWeekCalendar extends Fragment {
 
         @Override
         public WeekFragment getItem(int pos) {
-            return WeekFragment.newInstance(pos, mSelectorDateIndicatorValue, mCurrentDateIndicatorValue, mPrimaryTextColor);
+            return WeekFragment.newInstance(
+                    pos,
+                    mSelectorDateIndicatorValue,
+                    mCurrentDateIndicatorValue,
+                    mPrimaryTextColor,
+                    mPrimaryTextSize,
+                    mPrimaryTextStyle);
         }
 
         @Override

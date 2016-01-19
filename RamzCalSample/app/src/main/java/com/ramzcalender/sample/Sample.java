@@ -71,10 +71,18 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
 //        args.putString(RWeekCalendar.ARGUMENT_NOW_BACKGROUND,"bg_now");//set background to nowView
 //
 //        args.putInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_BACKGROUND, ContextCompat.getColor(this, R.color.md_black_1000));//set color to the currentdate
-//
+
 //        args.putInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR, ContextCompat.getColor(this,R.color.md_white_1000));//Set color to the primary views (Month name and dates)
-//
+
+//        args.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_SIZE, 18); // set size of primary text views (Month name and dates)
+
+//        args.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_STYLE, Typeface.BOLD); // set typeface style of primary text views (Month name and dates)
+
 //        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_COLOR, ContextCompat.getColor(this,R.color.md_green_500));//Set color to the secondary views (now view and week names)
+
+//        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_SIZE, 18); // set typeface size of secondary text views
+
+//        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_STYLE, Typeface.ITALIC); // set typeface style of secondary text views
 
         args.putBoolean(RWeekCalendar.ARGUMENT_DISPLAY_DATE_PICKER, false);
 

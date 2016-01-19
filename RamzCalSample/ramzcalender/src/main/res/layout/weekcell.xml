@@ -3,14 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="70dp"
     android:layout_weight="7"
-    android:background="@android:color/transparent"
     android:orientation="horizontal">
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@android:color/transparent"
         android:padding="5dp">
 
         <TextView
@@ -21,8 +19,7 @@
             android:gravity="center"
             android:text="21"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -39,8 +36,7 @@
             android:gravity="center"
             android:text="21"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -57,8 +53,7 @@
             android:gravity="center"
             android:text="21"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -75,8 +70,7 @@
             android:gravity="center"
             android:text="21"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -93,8 +87,7 @@
             android:gravity="center"
             android:text="21"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -111,8 +104,7 @@
             android:gravity="center"
             android:text="21"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -129,8 +121,7 @@
             android:gravity="center"
             android:text="21"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
     </RelativeLayout>
 
 </LinearLayout>

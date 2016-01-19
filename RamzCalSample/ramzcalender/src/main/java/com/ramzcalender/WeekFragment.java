@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,13 +55,15 @@ public class WeekFragment extends Fragment {
      * Set Values including customizable info
      */
     public static WeekFragment newInstance(int position, String selectorDateIndicatorValue
-            , int currentDateIndicatorValue, int primaryTextColor) {
+            , int currentDateIndicatorValue, int primaryTextColor, int primaryTextSize, int primaryTextStyle) {
         WeekFragment f = new WeekFragment();
         Bundle b = new Bundle();
         b.putInt(RWeekCalendar.POSITION_KEY, position);
         b.putString(RWeekCalendar.ARGUMENT_DATE_SELECTOR_BACKGROUND, selectorDateIndicatorValue);
         b.putInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_BACKGROUND, currentDateIndicatorValue);
         b.putInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR, primaryTextColor);
+        b.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_SIZE, primaryTextSize);
+        b.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_STYLE, primaryTextStyle);
         f.setArguments(b);
         return f;
     }
@@ -124,6 +127,19 @@ public class WeekFragment extends Fragment {
             }
             mDateInWeekArray.add(mStartDate);//Adding the days in the selected week to list
             mStartDate = mStartDate.plusDays(1); //Next day
+        }
+
+        int primaryTextStyle = getArguments().getInt(RWeekCalendar.ARGUMENT_DAY_TEXT_STYLE, -1);
+        int primaryTextSize = getArguments().getInt(RWeekCalendar.ARGUMENT_DAY_TEXT_SIZE, 0);
+        if (primaryTextSize > 0 || primaryTextStyle > -1) {
+            for (TextView tv : mTextViewArray) {
+                if (primaryTextSize > 0) {
+                    tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, primaryTextSize);
+                }
+                if (primaryTextStyle > -1) {
+                    tv.setTypeface(tv.getTypeface(), primaryTextStyle);
+                }
+            }
         }
 
         /*Setting color in the week views*/
