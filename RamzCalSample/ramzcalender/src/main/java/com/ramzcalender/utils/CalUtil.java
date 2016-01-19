@@ -1,50 +1,48 @@
 package com.ramzcalender.utils;
 
-import android.content.Context;
-import android.util.Log;
-
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.joda.time.LocalDateTime;
+
+import android.content.Context;
+import android.util.Log;
 
 import java.util.Calendar;
 
 
 /**
  * The MIT License (MIT)
-
- Copyright (c) 2015 Ramesh M Nair
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
+ *
+ * Copyright (c) 2015 Ramesh M Nair
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 public class CalUtil {
 
-    LocalDateTime mStartDate,selectedDate;
+    LocalDateTime mStartDate, selectedDate;
 
 
     /**
-     * Get the day difference in the selected day and the first day in the week 
-     *
-     * @param dayName
+     * Get the day difference in the selected day and the first day in the week
      */
     public static int mDateGap(String dayName) {
-        Log.d("dayname",dayName);
+        Log.d("dayname", dayName);
 
         if (dayName.equals("mon")) {
             return 1;
@@ -58,9 +56,7 @@ public class CalUtil {
             return 5;
         } else if (dayName.equals("sat")) {
             return 6;
-        }
-        else
-        {
+        } else {
             return 0;
         }
 
@@ -70,11 +66,8 @@ public class CalUtil {
 
     /**
      * Initial calculation of the week
-     *
-     * @param mContext
      */
-    public void calculate(Context mContext)
-    {
+    public void calculate(Context mContext) {
 
         //Initializing JodaTime
         JodaTimeAndroid.init(mContext);
@@ -103,12 +96,11 @@ public class CalUtil {
             setStartDate(ldt.getYear(), ldt.getMonthOfYear(), ldt.getDayOfMonth());
 
 
-
         }
     }
 
 
-/*Set The Start day (week)from calender*/
+    /*Set The Start day (week)from calender*/
     private void setStartDate(int year, int month, int day) {
 
         mStartDate = new LocalDateTime(year, month, day, 0, 0, 0);
@@ -119,15 +111,12 @@ public class CalUtil {
     }
 
 
-
-    public LocalDateTime getSelectedDate()
-    {
+    public LocalDateTime getSelectedDate() {
         return selectedDate;
     }
 
 
-    public LocalDateTime getStartDate()
-    {
+    public LocalDateTime getStartDate() {
         return mStartDate;
     }
 }

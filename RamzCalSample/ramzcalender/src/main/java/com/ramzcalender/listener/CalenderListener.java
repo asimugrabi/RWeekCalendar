@@ -27,20 +27,18 @@ import org.joda.time.LocalDateTime;
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-public abstract class CalenderListener {
-
-
+public interface CalenderListener {
     /**
      * listener notify if select date picker
      */
-    public abstract void onSelectPicker();
+    void onSelectPicker();
 
     /**
      * Notify when date selected
      *
      * @param mSelectedDate
      */
-    public abstract void onSelectDate(LocalDateTime mSelectedDate);
+    void onSelectDate(LocalDateTime mSelectedDate);
 
 
 
