@@ -6,6 +6,7 @@ import com.ramzcalender.listener.CalenderListener;
 
 import org.joda.time.LocalDateTime;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -55,7 +56,7 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
 
         Bundle args = new Bundle();
 
-       /*Should add this attribute if you adding  the ARGUMENT_NOW_BACKGROUND or ARGUMENT_DATE_SELECTOR_BACKGROUND Attribute*/
+       /*Should add this attribute if you adding  the ARGUMENT_NOW_BACKGROUND or ARGUMENT_SELECTED_DATE_BACKGROUND Attribute*/
         args.putString(RWeekCalendar.PACKAGE_NAME, getApplicationContext().getPackageName());
 
        /* IMPORTANT: Customization for the calender commenting or un commenting any of the attribute below will reflect change in calendar*/
@@ -64,13 +65,17 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
 
         args.putInt(RWeekCalendar.ARGUMENT_CALENDER_BACKGROUND_COLOR, ContextCompat.getColor(this, R.color.md_deep_purple_300));//set background color to calender
 
-        args.putString(RWeekCalendar.ARGUMENT_DATE_SELECTOR_BACKGROUND, "bg_select");//set background to the selected dates
+//        args.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, "bg_select");//set background to the selected dates - null to disable
+
+        args.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, null);//set background to the selected dates
+
+        args.putInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR, Color.BLUE);
 
         args.putInt(RWeekCalendar.ARGUMENT_WEEK_COUNT, 1000);//add N weeks from the current week (53 or 52 week is one year)
 
 //        args.putString(RWeekCalendar.ARGUMENT_NOW_BACKGROUND,"bg_now");//set background to nowView
 //
-//        args.putInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_BACKGROUND, ContextCompat.getColor(this, R.color.md_black_1000));//set color to the currentdate
+//        args.putInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_TEXT_COLOR, ContextCompat.getColor(this, R.color.md_black_1000));//set color to the currentdate
 
 //        args.putInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR, ContextCompat.getColor(this,R.color.md_white_1000));//Set color to the primary views (Month name and dates)
 

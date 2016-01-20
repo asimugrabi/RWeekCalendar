@@ -50,18 +50,19 @@ import java.util.Calendar;
  */
 public class RWeekCalendar extends Fragment {
     //Bundle Keys
-    public static String ARGUMENT_DATE_SELECTOR_BACKGROUND = "bg:select:date";
-    public static String ARGUMENT_CURRENT_DATE_BACKGROUND = "bg:current:bg";
-    public static String ARGUMENT_CALENDER_BACKGROUND_COLOR = "bg:cal";
-    public static String ARGUMENT_NOW_BACKGROUND = "bg:now";
-    public static String ARGUMENT_PRIMARY_TEXT_COLOR = "primary:text:color";
-    public static String ARGUMENT_DAY_TEXT_SIZE = "primary:day:size";
-    public static String ARGUMENT_DAY_TEXT_STYLE = "day:text:style";
-    public static String ARGUMENT_SECONDARY_TEXT_COLOR = "secondary:text:color";
-    public static String ARGUMENT_SECONDARY_TEXT_SIZE = "secondary:text:size";
-    public static String ARGUMENT_SECONDARY_TEXT_STYLE = "secondary:text:style";
-    public static String ARGUMENT_WEEK_COUNT = "week:count";
-    public static String ARGUMENT_DISPLAY_DATE_PICKER = "display:date:picker";
+    public static final String ARGUMENT_SELECTED_DATE_BACKGROUND = "bg:select:date";
+    public static final String ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR = "selected:date:highlight:color";
+    public static final String ARGUMENT_CURRENT_DATE_TEXT_COLOR = "bg:current:bg";
+    public static final String ARGUMENT_CALENDER_BACKGROUND_COLOR = "bg:cal";
+    public static final String ARGUMENT_NOW_BACKGROUND = "bg:now";
+    public static final String ARGUMENT_PRIMARY_TEXT_COLOR = "primary:text:color";
+    public static final String ARGUMENT_DAY_TEXT_SIZE = "primary:day:size";
+    public static final String ARGUMENT_DAY_TEXT_STYLE = "day:text:style";
+    public static final String ARGUMENT_SECONDARY_TEXT_COLOR = "secondary:text:color";
+    public static final String ARGUMENT_SECONDARY_TEXT_SIZE = "secondary:text:size";
+    public static final String ARGUMENT_SECONDARY_TEXT_STYLE = "secondary:text:style";
+    public static final String ARGUMENT_WEEK_COUNT = "week:count";
+    public static final String ARGUMENT_DISPLAY_DATE_PICKER = "display:date:picker";
 
     public static String PACKAGE_NAME = "package";
     public static String POSITION_KEY = "pos";
@@ -82,10 +83,11 @@ public class RWeekCalendar extends Fragment {
     boolean mDisplayDatePicker = true;
     //initial values of calender property
     String mSelectorDateIndicatorValue = "bg_red";
+    int mSelectorHighlightColor = -1;
     int mCurrentDateIndicatorValue = Color.BLACK;
     int mPrimaryTextColor = Color.WHITE;
     int mPrimaryTextSize;
-    int mPrimaryTextStyle;
+    int mPrimaryTextStyle = -1;
     int mWeekCount = 53;//one year
 
     @Override
@@ -202,11 +204,14 @@ public class RWeekCalendar extends Fragment {
         if (getArguments().containsKey(ARGUMENT_CALENDER_BACKGROUND_COLOR)) {
             mBackground.setBackgroundColor(getArguments().getInt(ARGUMENT_CALENDER_BACKGROUND_COLOR));
         }
-        if (getArguments().containsKey(ARGUMENT_DATE_SELECTOR_BACKGROUND)) {
-            mSelectorDateIndicatorValue = getArguments().getString(ARGUMENT_DATE_SELECTOR_BACKGROUND);
+        if (getArguments().containsKey(ARGUMENT_SELECTED_DATE_BACKGROUND)) {
+            mSelectorDateIndicatorValue = getArguments().getString(ARGUMENT_SELECTED_DATE_BACKGROUND);
         }
-        if (getArguments().containsKey(ARGUMENT_CURRENT_DATE_BACKGROUND)) {
-            mCurrentDateIndicatorValue = getArguments().getInt(ARGUMENT_CURRENT_DATE_BACKGROUND);
+        if (getArguments().containsKey(ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR)) {
+            mSelectorHighlightColor = getArguments().getInt(ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR);
+        }
+        if (getArguments().containsKey(ARGUMENT_CURRENT_DATE_TEXT_COLOR)) {
+            mCurrentDateIndicatorValue = getArguments().getInt(ARGUMENT_CURRENT_DATE_TEXT_COLOR);
         }
         if (getArguments().containsKey(ARGUMENT_WEEK_COUNT)) {
             if (getArguments().getInt(ARGUMENT_WEEK_COUNT) > 0)
@@ -310,7 +315,8 @@ public class RWeekCalendar extends Fragment {
                     mCurrentDateIndicatorValue,
                     mPrimaryTextColor,
                     mPrimaryTextSize,
-                    mPrimaryTextStyle);
+                    mPrimaryTextStyle,
+                    mSelectorHighlightColor);
         }
 
         @Override

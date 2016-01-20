@@ -49,18 +49,21 @@ public class WeekFragment extends Fragment {
     TextView[] mTextViewArray = new TextView[7];
 
     int mDatePosition = 0, mSelectorDateIndicatorValue = 0, mCurrentDateIndicatorValue = 0;
+    int mCurrentDateIndex = -1;
+    int mPrimaryTextColor, mSelectorHighlightColor = -1;
     ArrayList<LocalDateTime> mDateInWeekArray = new ArrayList<>();
 
     /**
      * Set Values including customizable info
      */
     public static WeekFragment newInstance(int position, String selectorDateIndicatorValue
-            , int currentDateIndicatorValue, int primaryTextColor, int primaryTextSize, int primaryTextStyle) {
+            , int currentDateIndicatorValue, int primaryTextColor, int primaryTextSize, int primaryTextStyle, int selectorHighlightColor) {
         WeekFragment f = new WeekFragment();
         Bundle b = new Bundle();
         b.putInt(RWeekCalendar.POSITION_KEY, position);
-        b.putString(RWeekCalendar.ARGUMENT_DATE_SELECTOR_BACKGROUND, selectorDateIndicatorValue);
-        b.putInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_BACKGROUND, currentDateIndicatorValue);
+        b.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, selectorDateIndicatorValue);
+        b.putInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR, selectorHighlightColor);
+        b.putInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_TEXT_COLOR, currentDateIndicatorValue);
         b.putInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR, primaryTextColor);
         b.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_SIZE, primaryTextSize);
         b.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_STYLE, primaryTextStyle);
@@ -100,11 +103,15 @@ public class WeekFragment extends Fragment {
         mStartDate = AppController.getInstance().getDate();
         mCurrentDate = AppController.getInstance().getDate();
         /*Setting the Resources values and Customization values to the views*/
-        Resources resources = getActivity().getResources();
-        mSelectorDateIndicatorValue = resources.getIdentifier(getArguments().getString(RWeekCalendar.ARGUMENT_DATE_SELECTOR_BACKGROUND), "drawable",
-                RWeekCalendar.PACKAGE_NAME_VALUE);
+        String identifierName = getArguments().getString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND);
+        if (identifierName != null) {
+            Resources resources = getActivity().getResources();
+            mSelectorDateIndicatorValue = resources.getIdentifier(identifierName, "drawable",
+                    RWeekCalendar.PACKAGE_NAME_VALUE);
+        }
 
-        mCurrentDateIndicatorValue = getArguments().getInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_BACKGROUND);
+        mCurrentDateIndicatorValue = getArguments().getInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_TEXT_COLOR);
+        mSelectorHighlightColor = getArguments().getInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR);
 
         mDatePosition = getArguments().getInt(RWeekCalendar.POSITION_KEY);
         int addDays = mDatePosition * 7;
@@ -113,15 +120,12 @@ public class WeekFragment extends Fragment {
 
         mSelectedDate = AppController.getInstance().getSelected();
 
-        mTextViewArray[0].setBackgroundResource(mSelectorDateIndicatorValue);//Setting the first days of the week as selected
-
          /*Fetching the data's for the week to display*/
         for (int i = 0; i < 7; i++) {
             if (mSelectedDate != null) {
                 if (mSelectedDate.getDayOfMonth() == mStartDate.getDayOfMonth()) {
                    /*Indicate  if the day is selected*/
-                    mTextViewArray[i].setBackgroundResource(mSelectorDateIndicatorValue);
-                    mDateSelectedBackground(i);//Changing View selector background
+                    setSelectedDateBackground(mTextViewArray[i]);
                     AppController.getInstance().setSelected(null);//null the selected date
                 }
             }
@@ -143,13 +147,12 @@ public class WeekFragment extends Fragment {
         }
 
         /*Setting color in the week views*/
-        mSundayTv.setTextColor(getArguments().getInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR));
-        mMondayTv.setTextColor(getArguments().getInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR));
-        mTuesdayTv.setTextColor(getArguments().getInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR));
-        mWednesdayTv.setTextColor(getArguments().getInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR));
-        mThursdayTv.setTextColor(getArguments().getInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR));
-        mFridayTv.setTextColor(getArguments().getInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR));
-        mSaturdayTv.setTextColor(getArguments().getInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR));
+        mPrimaryTextColor = getArguments().getInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR);
+        for (TextView tv : mTextViewArray) {
+            tv.setTextColor(mPrimaryTextColor);
+        }
+
+
 
         /*Displaying the days in the week views*/
         mSundayTv.setText(Integer.toString(mDateInWeekArray.get(0).getDayOfMonth()));
@@ -164,10 +167,13 @@ public class WeekFragment extends Fragment {
         if (mDatePosition == 0) {
             for (int i = 0; i < 7; i++) {
                 if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == mDateInWeekArray.get(i).getDayOfMonth()) {
+                    mCurrentDateIndex = i;
                     mTextViewArray[i].setTextColor(mCurrentDateIndicatorValue);
                 }
             }
         }
+
+        setSelectedDateBackground(mTextViewArray[0]); //Setting the first days of the week as selected
 
         /**
          * Click listener of all week days with the indicator change and passing listener info.
@@ -176,56 +182,49 @@ public class WeekFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mSelectedDateInfo(0);
-                mSundayTv.setBackgroundResource(mSelectorDateIndicatorValue);
-                mDateSelectedBackground(0);
+                setSelectedDateBackground((TextView) view);
             }
         });
         mMondayTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mSelectedDateInfo(1);
-                mMondayTv.setBackgroundResource(mSelectorDateIndicatorValue);
-                mDateSelectedBackground(1);
+                setSelectedDateBackground((TextView) view);
             }
         });
         mTuesdayTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mSelectedDateInfo(2);
-                mTuesdayTv.setBackgroundResource(mSelectorDateIndicatorValue);
-                mDateSelectedBackground(2);
+                setSelectedDateBackground((TextView) view);
             }
         });
         mWednesdayTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mSelectedDateInfo(3);
-                mWednesdayTv.setBackgroundResource(mSelectorDateIndicatorValue);
-                mDateSelectedBackground(3);
+                setSelectedDateBackground((TextView) view);
             }
         });
         mThursdayTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mSelectedDateInfo(4);
-                mThursdayTv.setBackgroundResource(mSelectorDateIndicatorValue);
-                mDateSelectedBackground(4);
+                setSelectedDateBackground((TextView) view);
             }
         });
         mFridayTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mSelectedDateInfo(5);
-                mFridayTv.setBackgroundResource(mSelectorDateIndicatorValue);
-                mDateSelectedBackground(5);
+                setSelectedDateBackground((TextView) view);
             }
         });
         mSaturdayTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mSelectedDateInfo(6);
-                mSaturdayTv.setBackgroundResource(mSelectorDateIndicatorValue);
-                mDateSelectedBackground(6);
+                setSelectedDateBackground((TextView) view);
             }
         });
     }
@@ -241,13 +240,7 @@ public class WeekFragment extends Fragment {
                 RWeekCalendar.getsWeekCalendarInstance().getSelectedDate(mDateInWeekArray.get(0));
         }
         if (mSelectedDate != null) {
-            mTextViewArray[0].setBackgroundResource(mSelectorDateIndicatorValue);
-            mTextViewArray[1].setBackgroundColor(Color.TRANSPARENT);
-            mTextViewArray[2].setBackgroundColor(Color.TRANSPARENT);
-            mTextViewArray[3].setBackgroundColor(Color.TRANSPARENT);
-            mTextViewArray[4].setBackgroundColor(Color.TRANSPARENT);
-            mTextViewArray[5].setBackgroundColor(Color.TRANSPARENT);
-            mTextViewArray[6].setBackgroundColor(Color.TRANSPARENT);
+            setSelectedDateBackground(mTextViewArray[0]);
         }
     }
 
@@ -261,17 +254,6 @@ public class WeekFragment extends Fragment {
     }
 
     /**
-     * Changing backgrounds of unselected views
-     */
-    public void mDateSelectedBackground(int position) {
-        for (int i = 0; i < mTextViewArray.length; i++) {
-            if (position != i) {
-                mTextViewArray[i].setBackgroundColor(Color.TRANSPARENT);
-            }
-        }
-    }
-
-    /**
      * Setting date when selected form picker
      */
     public void ChangeSelector(LocalDateTime mSelectedDate) {
@@ -280,10 +262,28 @@ public class WeekFragment extends Fragment {
         startDate = startDate.plusDays(addDays);
         for (int i = 0; i < 7; i++) {
             if (mSelectedDate.getDayOfMonth() == startDate.getDayOfMonth()) {
-                mTextViewArray[i].setBackgroundResource(mSelectorDateIndicatorValue);
-                mDateSelectedBackground(i);
+                setSelectedDateBackground(mTextViewArray[i]);
             }
             startDate = startDate.plusDays(1);
+        }
+    }
+
+    private void setSelectedDateBackground(TextView selectedDateTv) {
+        if (mSelectorDateIndicatorValue != 0) {
+            for (TextView tv : mTextViewArray) {
+                tv.setBackgroundColor(Color.TRANSPARENT);
+            }
+            selectedDateTv.setBackgroundResource(mSelectorDateIndicatorValue);
+        }
+
+        if (mSelectorHighlightColor != -1) {
+            for (TextView tv : mTextViewArray) {
+                tv.setTextColor(mPrimaryTextColor);
+            }
+            if (mCurrentDateIndex > -1) {
+                mTextViewArray[mCurrentDateIndex].setTextColor(mCurrentDateIndicatorValue);
+            }
+            selectedDateTv.setTextColor(mSelectorHighlightColor);
         }
     }
 }
