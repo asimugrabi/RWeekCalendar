@@ -51,27 +51,29 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
         setContentView(R.layout.sample);
 
         mDateSelectedTv = (TextView) findViewById(R.id.txt_date);
+        rCalendarFragment = (RWeekCalendar) getSupportFragmentManager().findFragmentByTag(RWeekCalendar.class.getSimpleName());
 
-        rCalendarFragment = new RWeekCalendar();
+        if (rCalendarFragment == null) {
+            rCalendarFragment = new RWeekCalendar();
 
-        Bundle args = new Bundle();
+            Bundle args = new Bundle();
 
-       /*Should add this attribute if you adding  the ARGUMENT_NOW_BACKGROUND or ARGUMENT_SELECTED_DATE_BACKGROUND Attribute*/
-        args.putString(RWeekCalendar.PACKAGE_NAME, getApplicationContext().getPackageName());
+            /*Should add this attribute if you adding  the ARGUMENT_NOW_BACKGROUND or ARGUMENT_SELECTED_DATE_BACKGROUND Attribute*/
+            args.putString(RWeekCalendar.PACKAGE_NAME, getApplicationContext().getPackageName());
 
-       /* IMPORTANT: Customization for the calender commenting or un commenting any of the attribute below will reflect change in calendar*/
+            /* IMPORTANT: Customization for the calender commenting or un commenting any of the attribute below will reflect change in calendar*/
 
 //---------------------------------------------------------------------------------------------------------------------//
 
-        args.putInt(RWeekCalendar.ARGUMENT_CALENDER_BACKGROUND_COLOR, ContextCompat.getColor(this, R.color.md_deep_purple_300));//set background color to calender
+            args.putInt(RWeekCalendar.ARGUMENT_CALENDER_BACKGROUND_COLOR, ContextCompat.getColor(this, R.color.md_deep_purple_300));//set background color to calender
 
 //        args.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, "bg_select");//set background to the selected dates - null to disable
 
-        args.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, null);//set background to the selected dates
+            args.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, null);//set background to the selected dates
 
-        args.putInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR, Color.BLUE);
+            args.putInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR, Color.BLUE);
 
-        args.putInt(RWeekCalendar.ARGUMENT_WEEK_COUNT, 1000);//add N weeks from the current week (53 or 52 week is one year)
+            args.putInt(RWeekCalendar.ARGUMENT_WEEK_COUNT, 1000);//add N weeks from the current week (53 or 52 week is one year)
 
 //        args.putString(RWeekCalendar.ARGUMENT_NOW_BACKGROUND,"bg_now");//set background to nowView
 //
@@ -89,16 +91,17 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
 
 //        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_STYLE, Typeface.ITALIC); // set typeface style of secondary text views
 
-        args.putBoolean(RWeekCalendar.ARGUMENT_DISPLAY_DATE_PICKER, false);
+            args.putBoolean(RWeekCalendar.ARGUMENT_DISPLAY_DATE_PICKER, false);
 
 //---------------------------------------------------------------------------------------------------------------------//
 
-        rCalendarFragment.setArguments(args);
+            rCalendarFragment.setArguments(args);
 
-        // Attach to the activity
-        FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-        t.replace(R.id.container, rCalendarFragment);
-        t.commit();
+            // Attach to the activity
+            FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+            t.replace(R.id.container, rCalendarFragment, RWeekCalendar.class.getSimpleName());
+            t.commit();
+        }
 
         CalenderListener listener = new CalenderListener() {
             @Override
