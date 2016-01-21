@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -92,6 +93,16 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
 //        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_STYLE, Typeface.ITALIC); // set typeface style of secondary text views
 
             args.putBoolean(RWeekCalendar.ARGUMENT_DISPLAY_DATE_PICKER, false);
+
+            ArrayList<Calendar> eventDays = new ArrayList<>();
+            eventDays.add(Calendar.getInstance());
+            eventDays.add(Calendar.getInstance());
+            eventDays.add(Calendar.getInstance());
+            eventDays.get(1).add(Calendar.DAY_OF_MONTH, 1);
+            eventDays.get(2).add(Calendar.WEEK_OF_MONTH, 1);
+            args.putSerializable(RWeekCalendar.ARGUMENT_EVENT_DAYS, eventDays);
+
+            args.putString(RWeekCalendar.ARGUMENT_EVENT_COLOR, RWeekCalendar.EVENT_COLOR_YELLOW);
 
 //---------------------------------------------------------------------------------------------------------------------//
 

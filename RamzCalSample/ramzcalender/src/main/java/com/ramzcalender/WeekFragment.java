@@ -1,6 +1,7 @@
 package com.ramzcalender;
 
 import com.ramzcalender.utils.AppController;
+import com.ramzcalender.utils.CalUtil;
 
 import org.joda.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class WeekFragment extends Fragment {
 
     TextView mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv, mThursdayTv, mFridayTv, mSaturdayTv;
     TextView[] mTextViewArray = new TextView[7];
+    ImageView[] mImageViewArray = new ImageView[7];
 
     int mDatePosition = 0, mSelectorDateIndicatorValue = 0, mCurrentDateIndicatorValue = 0;
     int mCurrentDateIndex = -1;
@@ -57,7 +60,7 @@ public class WeekFragment extends Fragment {
      * Set Values including customizable info
      */
     public static WeekFragment newInstance(int position, String selectorDateIndicatorValue
-            , int currentDateIndicatorValue, int primaryTextColor, int primaryTextSize, int primaryTextStyle, int selectorHighlightColor) {
+            , int currentDateIndicatorValue, int primaryTextColor, int primaryTextSize, int primaryTextStyle, int selectorHighlightColor, ArrayList<LocalDateTime> eventDays, String eventColor) {
         WeekFragment f = new WeekFragment();
         Bundle b = new Bundle();
         b.putInt(RWeekCalendar.POSITION_KEY, position);
@@ -67,6 +70,8 @@ public class WeekFragment extends Fragment {
         b.putInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR, primaryTextColor);
         b.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_SIZE, primaryTextSize);
         b.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_STYLE, primaryTextStyle);
+        b.putSerializable(RWeekCalendar.ARGUMENT_EVENT_DAYS, eventDays);
+        b.putString(RWeekCalendar.ARGUMENT_EVENT_COLOR, eventColor);
         f.setArguments(b);
         return f;
     }
@@ -84,18 +89,34 @@ public class WeekFragment extends Fragment {
         mFridayTv = (TextView) view.findViewById(R.id.fri_txt);
         mSaturdayTv = (TextView) view.findViewById(R.id.sat_txt);
 
+        ImageView sundayEvent = (ImageView) view.findViewById(R.id.img_sun_txt);
+        ImageView mondayEvent = (ImageView) view.findViewById(R.id.img_mon_txt);
+        ImageView tuesdayEvent = (ImageView) view.findViewById(R.id.img_tue_txt);
+        ImageView wednesdayEvent = (ImageView) view.findViewById(R.id.img_wen_txt);
+        ImageView thursdayEvent = (ImageView) view.findViewById(R.id.img_thu_txt);
+        ImageView fridayEvent = (ImageView) view.findViewById(R.id.img_fri_txt);
+        ImageView saturdayEvent = (ImageView) view.findViewById(R.id.img_sat_txt);
+
         /*Adding WeekViews to array for background changing purpose*/
         mTextViewArray[0] = mSundayTv;
+        mImageViewArray[0] = sundayEvent;
         mTextViewArray[1] = mMondayTv;
+        mImageViewArray[1] = mondayEvent;
         mTextViewArray[2] = mTuesdayTv;
+        mImageViewArray[2] = tuesdayEvent;
         mTextViewArray[3] = mWednesdayTv;
+        mImageViewArray[3] = wednesdayEvent;
         mTextViewArray[4] = mThursdayTv;
+        mImageViewArray[4] = thursdayEvent;
         mTextViewArray[5] = mFridayTv;
+        mImageViewArray[5] = fridayEvent;
         mTextViewArray[6] = mSaturdayTv;
+        mImageViewArray[6] = saturdayEvent;
 
         return view;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -152,16 +173,21 @@ public class WeekFragment extends Fragment {
             tv.setTextColor(mPrimaryTextColor);
         }
 
-
+        ArrayList<LocalDateTime> eventDays = (ArrayList<LocalDateTime>) getArguments()
+                .getSerializable(RWeekCalendar.ARGUMENT_EVENT_DAYS);
+        int eventColorDrawable = getEventColorDrawable(getArguments().getString(RWeekCalendar.ARGUMENT_EVENT_COLOR));
 
         /*Displaying the days in the week views*/
-        mSundayTv.setText(Integer.toString(mDateInWeekArray.get(0).getDayOfMonth()));
-        mMondayTv.setText(Integer.toString(mDateInWeekArray.get(1).getDayOfMonth()));
-        mTuesdayTv.setText(Integer.toString(mDateInWeekArray.get(2).getDayOfMonth()));
-        mWednesdayTv.setText(Integer.toString(mDateInWeekArray.get(3).getDayOfMonth()));
-        mThursdayTv.setText(Integer.toString(mDateInWeekArray.get(4).getDayOfMonth()));
-        mFridayTv.setText(Integer.toString(mDateInWeekArray.get(5).getDayOfMonth()));
-        mSaturdayTv.setText(Integer.toString(mDateInWeekArray.get(6).getDayOfMonth()));
+        int dayOfWeek = 0;
+        for (TextView dayTv : mTextViewArray) {
+            dayTv.setText(Integer.toString(mDateInWeekArray.get(dayOfWeek).getDayOfMonth()));
+            if (eventDays != null) {
+                if (CalUtil.isDayInList(mDateInWeekArray.get(dayOfWeek), eventDays)) {
+                    mImageViewArray[dayOfWeek].setImageResource(eventColorDrawable);
+                }
+            }
+            dayOfWeek++;
+        }
 
         /*if the selected week is the current week indicates the current day*/
         if (mDatePosition == 0) {
@@ -284,6 +310,23 @@ public class WeekFragment extends Fragment {
                 mTextViewArray[mCurrentDateIndex].setTextColor(mCurrentDateIndicatorValue);
             }
             selectedDateTv.setTextColor(mSelectorHighlightColor);
+        }
+    }
+
+    private int getEventColorDrawable(String eventColor) {
+        if (eventColor.equals(RWeekCalendar.EVENT_COLOR_BLUE)) {
+            return R.drawable.blue_circle;
+        }
+        if (eventColor.equals(RWeekCalendar.EVENT_COLOR_GREEN)) {
+            return R.drawable.green_circle;
+        }
+        if (eventColor.equals(RWeekCalendar.EVENT_COLOR_RED)) {
+            return R.drawable.red_circle;
+        }
+        if (eventColor.equals(RWeekCalendar.EVENT_COLOR_YELLOW)) {
+            return R.drawable.yellow_circle;
+        } else {
+            return R.drawable.white_circle;
         }
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="60dp"
     android:layout_weight="7"
     android:orientation="horizontal">
 
@@ -20,6 +20,13 @@
             android:text="21"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/img_sun_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sun_txt"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -37,6 +44,13 @@
             android:text="21"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/img_mon_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mon_txt"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -54,6 +68,13 @@
             android:text="21"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/img_tue_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tue_txt"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -71,6 +92,13 @@
             android:text="21"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/img_wen_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/wen_txt"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -88,6 +116,13 @@
             android:text="21"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/img_thu_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/thu_txt"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -105,6 +140,13 @@
             android:text="21"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/img_fri_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fri_txt"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -122,6 +164,13 @@
             android:text="21"
             android:textColor="@android:color/white"
             android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/img_sat_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sat_txt"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
 </LinearLayout>

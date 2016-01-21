@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -63,9 +64,17 @@ public class RWeekCalendar extends Fragment {
     public static final String ARGUMENT_SECONDARY_TEXT_STYLE = "secondary:text:style";
     public static final String ARGUMENT_WEEK_COUNT = "week:count";
     public static final String ARGUMENT_DISPLAY_DATE_PICKER = "display:date:picker";
+    public static final String ARGUMENT_EVENT_DAYS = "event:days";
+    public static final String ARGUMENT_EVENT_COLOR = "event:color";
 
-    public static String PACKAGE_NAME = "package";
-    public static String POSITION_KEY = "pos";
+    public static final String EVENT_COLOR_YELLOW = "yellow";
+    public static final String EVENT_COLOR_BLUE = "blue";
+    public static final String EVENT_COLOR_GREEN = "green";
+    public static final String EVENT_COLOR_RED = "red";
+    public static final String EVENT_COLOR_WHITE = "white";
+
+    public static final String PACKAGE_NAME = "package";
+    public static final String POSITION_KEY = "pos";
     public static String PACKAGE_NAME_VALUE = "com.ramzcalender";
 
     LocalDateTime mStartDate, mSelectedDate;
@@ -76,6 +85,8 @@ public class RWeekCalendar extends Fragment {
     LinearLayout mBackground;
     ViewGroup mFrameDatePicker;
     CalenderListener mCalenderListener;
+
+    private ArrayList<LocalDateTime> mEventDays;
 
     private static RWeekCalendar sWeekCalendarInstance;
 
@@ -88,6 +99,7 @@ public class RWeekCalendar extends Fragment {
     int mPrimaryTextColor = Color.WHITE;
     int mPrimaryTextSize;
     int mPrimaryTextStyle = -1;
+    String mEventColor = EVENT_COLOR_WHITE;
     int mWeekCount = 53;//one year
 
     @Override
@@ -260,7 +272,21 @@ public class RWeekCalendar extends Fragment {
                     , "drawable"
                     , PACKAGE_NAME_VALUE));
         }
-
+        ArrayList<Calendar> eventDays;
+        try {
+            eventDays = (ArrayList<Calendar>) getArguments().get(ARGUMENT_EVENT_DAYS);
+        } catch (ClassCastException e) {
+            eventDays = null;
+        }
+        if (eventDays != null) {
+            mEventDays = new ArrayList<>();
+            for (Calendar eventDay : eventDays) {
+                mEventDays.add(LocalDateTime.fromCalendarFields(eventDay));
+            }
+        }
+        if (getArguments().containsKey(ARGUMENT_EVENT_COLOR)) {
+            mEventColor = getArguments().getString(ARGUMENT_EVENT_COLOR);
+        }
     }
 
     /**
@@ -279,6 +305,13 @@ public class RWeekCalendar extends Fragment {
     }
 
     /**
+     * creating instance of the calender class
+     */
+    public static synchronized RWeekCalendar getsWeekCalendarInstance() {
+        return sWeekCalendarInstance;
+    }
+
+    /**
      * Notify the selected date main page
      */
     public void getSelectedDate(LocalDateTime mSelectedDate) {
@@ -290,13 +323,6 @@ public class RWeekCalendar extends Fragment {
      */
     public void setCalenderListener(CalenderListener calenderListener) {
         this.mCalenderListener = calenderListener;
-    }
-
-    /**
-     * creating instance of the calender class
-     */
-    public static synchronized RWeekCalendar getsWeekCalendarInstance() {
-        return sWeekCalendarInstance;
     }
 
     /**
@@ -316,7 +342,9 @@ public class RWeekCalendar extends Fragment {
                     mPrimaryTextColor,
                     mPrimaryTextSize,
                     mPrimaryTextStyle,
-                    mSelectorHighlightColor);
+                    mSelectorHighlightColor,
+                    mEventDays,
+                    mEventColor);
         }
 
         @Override
@@ -324,21 +352,4 @@ public class RWeekCalendar extends Fragment {
             return mWeekCount;
         }
     }
-
-/*
-    public void SetPrimaryTypeFace(Typeface mFont) {
-//        mMonthView.setTypeface(null, Typeface.NORMAL);
-    }
-
-    public void SetSecondaryTypeFace(Typeface mFont) {
-//        mNowView.setTypeface(mFont);
-//        mSundayTv.setTypeface(mFont);
-//        mMondayTv.setTypeface(mFont);
-//        mTuesdayTv.setTypeface(mFont);
-//        mWednesdayTv.setTypeface(mFont);
-//        mThursdayTv.setTypeface(mFont);
-//        mFridayTv.setTypeface(mFont);
-//        mSaturdayTv.setTypeface(mFont);
-
-    }*/
 }

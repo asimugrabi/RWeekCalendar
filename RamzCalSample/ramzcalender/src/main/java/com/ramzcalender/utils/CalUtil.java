@@ -5,15 +5,16 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import org.joda.time.LocalDateTime;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.Calendar;
+import java.util.List;
 
 
 /**
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Ramesh M Nair
+ * Edit: Asi Mugrabi
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,8 +43,6 @@ public class CalUtil {
      * Get the day difference in the selected day and the first day in the week
      */
     public static int mDateGap(String dayName) {
-        Log.d("dayname", dayName);
-
         if (dayName.equals("mon")) {
             return 1;
         } else if (dayName.equals("tue")) {
@@ -59,10 +58,24 @@ public class CalUtil {
         } else {
             return 0;
         }
-
-
     }
 
+    public static boolean isSameDay(LocalDateTime day1, LocalDateTime day2) {
+        return day1.getYear() == day2.getYear() && day1.getMonthOfYear() == day2.getMonthOfYear()
+                && day1.getDayOfMonth() == day2.getDayOfMonth();
+    }
+
+    public static boolean isDayInList(LocalDateTime day, List<LocalDateTime> days) {
+        if (days == null) {
+            return false;
+        }
+        for (LocalDateTime isDay : days) {
+            if (isSameDay(isDay, day)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Initial calculation of the week
@@ -89,12 +102,9 @@ public class CalUtil {
             calendar.add(Calendar.DAY_OF_YEAR, -weekGap);
 
             //now the date is weekGap days back
-            Log.i("weekGap", "" + calendar.getTime().toString());
-
             LocalDateTime ldt = LocalDateTime.fromCalendarFields(calendar);
 
             setStartDate(ldt.getYear(), ldt.getMonthOfYear(), ldt.getDayOfMonth());
-
 
         }
     }
