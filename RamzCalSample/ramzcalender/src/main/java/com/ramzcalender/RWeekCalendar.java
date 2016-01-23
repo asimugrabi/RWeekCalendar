@@ -183,6 +183,7 @@ public class RWeekCalendar extends Fragment {
             PACKAGE_NAME_VALUE = getArguments().getString(PACKAGE_NAME);//its for showing the resource value from the parent package
         }
         mViewPager.setAdapter(mAdapter);
+        mViewPager.setCurrentItem(mWeekCount/2);
         /*Week change Listener*/
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -336,7 +337,7 @@ public class RWeekCalendar extends Fragment {
         @Override
         public WeekFragment getItem(int pos) {
             return WeekFragment.newInstance(
-                    pos,
+                    pos-mWeekCount/2,
                     mSelectorDateIndicatorValue,
                     mCurrentDateIndicatorValue,
                     mPrimaryTextColor,
