@@ -3,6 +3,7 @@ package com.ramzcalender.sample;
 import com.android.datetimepicker.date.DatePickerDialog;
 import com.ramzcalender.RWeekCalendar;
 import com.ramzcalender.listener.CalenderListener;
+import com.ramzcalender.utils.WeekCalendarOptions;
 
 import org.joda.time.LocalDateTime;
 
@@ -92,6 +93,8 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
 
 //        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_STYLE, Typeface.ITALIC); // set typeface style of secondary text views
 
+            args.putString(RWeekCalendar.ARGUMENT_DAY_HEADER_LENGTH, WeekCalendarOptions.DAY_HEADER_LENGTH_ONE_LETTER);
+
             args.putBoolean(RWeekCalendar.ARGUMENT_DISPLAY_DATE_PICKER, false);
 
             ArrayList<Calendar> eventDays = new ArrayList<>();
@@ -102,7 +105,7 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
             eventDays.get(2).add(Calendar.WEEK_OF_MONTH, 1);
             args.putSerializable(RWeekCalendar.ARGUMENT_EVENT_DAYS, eventDays);
 
-            args.putString(RWeekCalendar.ARGUMENT_EVENT_COLOR, RWeekCalendar.EVENT_COLOR_YELLOW);
+            args.putString(RWeekCalendar.ARGUMENT_EVENT_COLOR, WeekCalendarOptions.EVENT_COLOR_YELLOW);
 
 //---------------------------------------------------------------------------------------------------------------------//
 

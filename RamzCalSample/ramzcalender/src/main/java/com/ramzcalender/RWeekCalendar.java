@@ -4,6 +4,7 @@ import com.ramzcalender.listener.CalenderListener;
 import com.ramzcalender.utils.AppController;
 import com.ramzcalender.utils.CalUtil;
 import com.ramzcalender.utils.ViewUtils;
+import com.ramzcalender.utils.WeekCalendarOptions;
 
 import org.joda.time.LocalDateTime;
 import org.joda.time.Weeks;
@@ -62,16 +63,11 @@ public class RWeekCalendar extends Fragment {
     public static final String ARGUMENT_SECONDARY_TEXT_COLOR = "secondary:text:color";
     public static final String ARGUMENT_SECONDARY_TEXT_SIZE = "secondary:text:size";
     public static final String ARGUMENT_SECONDARY_TEXT_STYLE = "secondary:text:style";
+    public static final String ARGUMENT_DAY_HEADER_LENGTH = "day:header:length";
     public static final String ARGUMENT_WEEK_COUNT = "week:count";
     public static final String ARGUMENT_DISPLAY_DATE_PICKER = "display:date:picker";
     public static final String ARGUMENT_EVENT_DAYS = "event:days";
     public static final String ARGUMENT_EVENT_COLOR = "event:color";
-
-    public static final String EVENT_COLOR_YELLOW = "yellow";
-    public static final String EVENT_COLOR_BLUE = "blue";
-    public static final String EVENT_COLOR_GREEN = "green";
-    public static final String EVENT_COLOR_RED = "red";
-    public static final String EVENT_COLOR_WHITE = "white";
 
     public static final String PACKAGE_NAME = "package";
     public static final String POSITION_KEY = "pos";
@@ -79,6 +75,7 @@ public class RWeekCalendar extends Fragment {
 
     LocalDateTime mStartDate, mSelectedDate;
     TextView mMonthView, mNowView, mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv, mThursdayTv;
+    TextView[] mDayHeaders;
 
     TextView mFridayTv, mSaturdayTv;
     ViewPager mViewPager;
@@ -99,7 +96,7 @@ public class RWeekCalendar extends Fragment {
     int mPrimaryTextColor = Color.WHITE;
     int mPrimaryTextSize;
     int mPrimaryTextStyle = -1;
-    String mEventColor = EVENT_COLOR_WHITE;
+    String mEventColor = WeekCalendarOptions.EVENT_COLOR_WHITE;
     int mWeekCount = 53;//one year
 
     @Override
@@ -126,6 +123,9 @@ public class RWeekCalendar extends Fragment {
         mSaturdayTv = (TextView) view.findViewById(R.id.week_saturday);
         mBackground = (LinearLayout) view.findViewById(R.id.background);
         mFrameDatePicker = (ViewGroup) view.findViewById(R.id.frame_date_picker);
+
+        mDayHeaders = new TextView[]{mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv, mThursdayTv
+                , mFridayTv, mSaturdayTv};
 
         return view;
     }
@@ -183,7 +183,7 @@ public class RWeekCalendar extends Fragment {
             PACKAGE_NAME_VALUE = getArguments().getString(PACKAGE_NAME);//its for showing the resource value from the parent package
         }
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setCurrentItem(mWeekCount/2);
+        mViewPager.setCurrentItem(mWeekCount / 2);
         /*Week change Listener*/
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -288,6 +288,8 @@ public class RWeekCalendar extends Fragment {
         if (getArguments().containsKey(ARGUMENT_EVENT_COLOR)) {
             mEventColor = getArguments().getString(ARGUMENT_EVENT_COLOR);
         }
+        String dayHeaderLength = getArguments().getString(ARGUMENT_DAY_HEADER_LENGTH);
+        setHeaderLength(dayHeaderLength);
     }
 
     /**
@@ -326,6 +328,24 @@ public class RWeekCalendar extends Fragment {
         this.mCalenderListener = calenderListener;
     }
 
+    private void setHeaderLength(String dayHeaderLength) {
+        if (dayHeaderLength == null) {
+            return;
+        }
+        String[] headers;
+        if (dayHeaderLength.equals(WeekCalendarOptions.DAY_HEADER_LENGTH_THREE_LETTERS)) {
+            headers = getResources().getStringArray(R.array.week_header_three);
+        } else if (dayHeaderLength.equals(WeekCalendarOptions.DAY_HEADER_LENGTH_ONE_LETTER)) {
+            headers = getResources().getStringArray(R.array.week_header_one);
+        } else {
+            headers = getResources().getStringArray(R.array.week_header_one);
+        }
+        int i = 0;
+        for (TextView tv : mDayHeaders) {
+            tv.setText(headers[i++]);
+        }
+    }
+
     /**
      * Adaptor which shows weeks in the view
      */
@@ -337,7 +357,7 @@ public class RWeekCalendar extends Fragment {
         @Override
         public WeekFragment getItem(int pos) {
             return WeekFragment.newInstance(
-                    pos-mWeekCount/2,
+                    pos - mWeekCount / 2,
                     mSelectorDateIndicatorValue,
                     mCurrentDateIndicatorValue,
                     mPrimaryTextColor,

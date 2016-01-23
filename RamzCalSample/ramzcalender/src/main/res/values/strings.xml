@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sunday_one">S</string>
+    <string name="monday_one">M</string>
+    <string name="tuesday_one">T</string>
+    <string name="wednesday_one">W</string>
+    <string name="thursday_one">T</string>
+    <string name="friday_one">F</string>
+    <string name="saturday_one">S</string>
+
+    <string name="sunday_three">Sun</string>
+    <string name="monday_three">Mon</string>
+    <string name="tuesday_three">Tue</string>
+    <string name="wednesday_three">Wed</string>
+    <string name="thursday_three">Thu</string>
+    <string name="friday_three">Fri</string>
+    <string name="saturday_three">Sat</string>
+</resources>

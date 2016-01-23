@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="week_header_one">
+        <item>@string/sunday_one</item>
+        <item>@string/monday_one</item>
+        <item>@string/tuesday_one</item>
+        <item>@string/wednesday_one</item>
+        <item>@string/thursday_one</item>
+        <item>@string/friday_one</item>
+        <item>@string/saturday_one</item>
+    </string-array>
+
+    <string-array name="week_header_three">
+        <item>@string/sunday_three</item>
+        <item>@string/monday_three</item>
+        <item>@string/tuesday_three</item>
+        <item>@string/wednesday_three</item>
+        <item>@string/thursday_three</item>
+        <item>@string/friday_three</item>
+        <item>@string/saturday_three</item>
+    </string-array>
+</resources>

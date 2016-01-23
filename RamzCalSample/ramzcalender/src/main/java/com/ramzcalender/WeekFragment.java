@@ -2,6 +2,7 @@ package com.ramzcalender;
 
 import com.ramzcalender.utils.AppController;
 import com.ramzcalender.utils.CalUtil;
+import com.ramzcalender.utils.WeekCalendarOptions;
 
 import org.joda.time.LocalDateTime;
 
@@ -48,8 +49,8 @@ public class WeekFragment extends Fragment {
     LocalDateTime mSelectedDate, mStartDate, mCurrentDate;
 
     TextView mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv, mThursdayTv, mFridayTv, mSaturdayTv;
-    TextView[] mTextViewArray = new TextView[7];
-    ImageView[] mImageViewArray = new ImageView[7];
+    TextView[] mTextViewArray;
+    ImageView[] mImageViewArray;
 
     int mDatePosition = 0, mSelectorDateIndicatorValue = 0, mCurrentDateIndicatorValue = 0;
     int mCurrentDateIndex = -1;
@@ -98,20 +99,10 @@ public class WeekFragment extends Fragment {
         ImageView saturdayEvent = (ImageView) view.findViewById(R.id.img_sat_txt);
 
         /*Adding WeekViews to array for background changing purpose*/
-        mTextViewArray[0] = mSundayTv;
-        mImageViewArray[0] = sundayEvent;
-        mTextViewArray[1] = mMondayTv;
-        mImageViewArray[1] = mondayEvent;
-        mTextViewArray[2] = mTuesdayTv;
-        mImageViewArray[2] = tuesdayEvent;
-        mTextViewArray[3] = mWednesdayTv;
-        mImageViewArray[3] = wednesdayEvent;
-        mTextViewArray[4] = mThursdayTv;
-        mImageViewArray[4] = thursdayEvent;
-        mTextViewArray[5] = mFridayTv;
-        mImageViewArray[5] = fridayEvent;
-        mTextViewArray[6] = mSaturdayTv;
-        mImageViewArray[6] = saturdayEvent;
+        mTextViewArray = new TextView[]{mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv
+                , mThursdayTv, mFridayTv, mSaturdayTv};
+        mImageViewArray = new ImageView[]{sundayEvent, mondayEvent, tuesdayEvent, wednesdayEvent
+                , thursdayEvent, fridayEvent, saturdayEvent};
 
         return view;
     }
@@ -314,16 +305,16 @@ public class WeekFragment extends Fragment {
     }
 
     private int getEventColorDrawable(String eventColor) {
-        if (eventColor.equals(RWeekCalendar.EVENT_COLOR_BLUE)) {
+        if (eventColor.equals(WeekCalendarOptions.EVENT_COLOR_BLUE)) {
             return R.drawable.blue_circle;
         }
-        if (eventColor.equals(RWeekCalendar.EVENT_COLOR_GREEN)) {
+        if (eventColor.equals(WeekCalendarOptions.EVENT_COLOR_GREEN)) {
             return R.drawable.green_circle;
         }
-        if (eventColor.equals(RWeekCalendar.EVENT_COLOR_RED)) {
+        if (eventColor.equals(WeekCalendarOptions.EVENT_COLOR_RED)) {
             return R.drawable.red_circle;
         }
-        if (eventColor.equals(RWeekCalendar.EVENT_COLOR_YELLOW)) {
+        if (eventColor.equals(WeekCalendarOptions.EVENT_COLOR_YELLOW)) {
             return R.drawable.yellow_circle;
         } else {
             return R.drawable.white_circle;
