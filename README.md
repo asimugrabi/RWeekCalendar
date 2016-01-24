@@ -158,7 +158,7 @@ Usage:
 Example
 -------
 
-[Sample Class!](WeekCalSample/app/src/main/java/com/weekcalendar/sample/Sample.java)
+[Sample Usage](WeekCalSample/app/src/main/java/com/weekcalendar/sample/Sample.java)
 
 ## License
 
