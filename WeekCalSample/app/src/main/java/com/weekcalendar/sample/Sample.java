@@ -75,26 +75,25 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
 
             args.putInt(RWeekCalendar.ARGUMENT_WEEK_COUNT, 1000);//add N weeks from the current week (53 or 52 week is one year)
 
+            args.putBoolean(RWeekCalendar.ARGUMENT_DISPLAY_DATE_PICKER, false); // option to cancel date picker
 //        args.putString(RWeekCalendar.ARGUMENT_NOW_BACKGROUND,"bg_now");//set background to nowView
 //
-//        args.putInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_TEXT_COLOR, ContextCompat.getColor(this, R.color.md_black_1000));//set color to the currentdate
+//        args.putInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_TEXT_COLOR, ContextCompat.getColor(this, R.color.md_green_500));//set text color to the currentdate
 
-//        args.putInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR, ContextCompat.getColor(this,R.color.md_white_1000));//Set color to the primary views (Month name and dates)
+//        args.putInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR, ContextCompat.getColor(this,R.color.md_yellow_500));//Set color to the primary views (Month name and dates)
 
-//        args.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_SIZE, 18); // set size of primary text views (Month name and dates)
-
-//        args.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_STYLE, Typeface.BOLD); // set typeface style of primary text views (Month name and dates)
-
+//        args.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_SIZE, 18); // set text size of dates
+//
+//        args.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_STYLE, Typeface.BOLD_ITALIC); // set typeface style of dates
+//
 //        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_COLOR, ContextCompat.getColor(this,R.color.md_green_500));//Set color to the secondary views (now view and week names)
-
+//
 //        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_SIZE, 18); // set typeface size of secondary text views (now view and week names)
-
+//
 //        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_STYLE, Typeface.ITALIC); // set typeface style of secondary text views (now view and week names)
 
             args.putString(RWeekCalendar.ARGUMENT_DAY_HEADER_LENGTH, WeekCalendarOptions.DAY_HEADER_LENGTH_THREE_LETTERS); // pick between three or one date header letters ex. "Sun" or "S"
             // two options - 1. WeekCalendarOptions.DAY_HEADER_LENGTH_THREE_LETTERS,  2. WeekCalendarOptions.DAY_HEADER_LENGTH_ONE_LETTER
-
-            args.putBoolean(RWeekCalendar.ARGUMENT_DISPLAY_DATE_PICKER, false);
 
             ArrayList<Calendar> eventDays = new ArrayList<>();
             eventDays.add(Calendar.getInstance());
