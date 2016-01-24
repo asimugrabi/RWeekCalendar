@@ -1,7 +1,7 @@
 package com.weekcalendar.sample;
 
 import com.android.datetimepicker.date.DatePickerDialog;
-import com.weekcalendar.RWeekCalendar;
+import com.weekcalendar.WeekCalendarFragment;
 import com.weekcalendar.listener.CalenderListener;
 import com.weekcalendar.utils.WeekCalendarOptions;
 
@@ -17,13 +17,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
 /**
  * Created by rameshvoltella on 11/10/15.
  * Edit: Asi Mugrabi
  */
 
-//## Licence of Date picker using in this sample
+//## Licence of Date picker used in this sample
 
 /**
  * Copyright 2014 Paul Stöhr
@@ -43,8 +42,8 @@ import java.util.Calendar;
  */
 
 public class Sample extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    RWeekCalendar rCalendarFragment;
-    TextView mDateSelectedTv;
+    private WeekCalendarFragment mWeekCalendarFragment;
+    private TextView mDateSelectedTv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,68 +51,95 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
         setContentView(R.layout.sample);
 
         mDateSelectedTv = (TextView) findViewById(R.id.txt_date);
-        rCalendarFragment = (RWeekCalendar) getSupportFragmentManager().findFragmentByTag(RWeekCalendar.class.getSimpleName());
+        mWeekCalendarFragment = (WeekCalendarFragment) getSupportFragmentManager()
+                .findFragmentByTag(WeekCalendarFragment.class.getSimpleName());
 
-        if (rCalendarFragment == null) {
-            rCalendarFragment = new RWeekCalendar();
+        if (mWeekCalendarFragment == null) {
+            mWeekCalendarFragment = new WeekCalendarFragment();
 
             Bundle args = new Bundle();
 
-            /*Should add this attribute if you adding  the ARGUMENT_NOW_BACKGROUND or ARGUMENT_SELECTED_DATE_BACKGROUND Attribute*/
-            args.putString(RWeekCalendar.ARGUMENT_PACKAGE_NAME, getApplicationContext().getPackageName());
+            /* Must add this attribute if using ARGUMENT_NOW_BACKGROUND or ARGUMENT_SELECTED_DATE_BACKGROUND*/
+            args.putString(WeekCalendarFragment.ARGUMENT_PACKAGE_NAME
+                    , getApplicationContext().getPackageName());
 
-            /* IMPORTANT: Customization for the calender commenting or un commenting any of the attribute below will reflect change in calendar*/
+            /* IMPORTANT: Customization for week calender fragment*/
+//------------------------------------------------------------------------------------------------//
+            //sets background drawable to the selected dates - null to disable
+            args.putString(WeekCalendarFragment.ARGUMENT_SELECTED_DATE_BACKGROUND, "bg_select");
+//            args.putString(WeekCalendarFragment.ARGUMENT_SELECTED_DATE_BACKGROUND, null);// disable
 
-//---------------------------------------------------------------------------------------------------------------------//
+            //Sets background color to calender
+            args.putInt(WeekCalendarFragment.ARGUMENT_CALENDER_BACKGROUND_COLOR
+                    , ContextCompat.getColor(this, R.color.md_deep_purple_500));
 
-            args.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, "bg_select");//set background to the selected dates - null to disable
-//            args.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, null);//set background to the selected dates
+            // Sets text color for the selected date
+//            args.putInt(WeekCalendarFragment.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR
+//                  , ContextCompat.getColor(this, R.color.md_pink_200));
 
-            args.putInt(RWeekCalendar.ARGUMENT_CALENDER_BACKGROUND_COLOR, ContextCompat.getColor(this, R.color.md_deep_purple_500));//set background color to calender
+            // Adds N weeks from the current week (53 or 52 week is one year)
+            args.putInt(WeekCalendarFragment.ARGUMENT_WEEK_COUNT, 1000);
 
-//            args.putInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR,ContextCompat.getColor(this, R.color.md_pink_200)); // set text color for the selected date
+            // Cancels date picker
+            args.putBoolean(WeekCalendarFragment.ARGUMENT_DISPLAY_DATE_PICKER, false);
 
-            args.putInt(RWeekCalendar.ARGUMENT_WEEK_COUNT, 1000);//add N weeks from the current week (53 or 52 week is one year)
+            // Sets background resource drawable to nowView
+//        args.putString(WeekCalendarFragment.ARGUMENT_NOW_BACKGROUND,"bg_now");
 
-            args.putBoolean(RWeekCalendar.ARGUMENT_DISPLAY_DATE_PICKER, false); // option to cancel date picker
-//        args.putString(RWeekCalendar.ARGUMENT_NOW_BACKGROUND,"bg_now");//set background to nowView
+            // Sets text color to the current date
+//        args.putInt(WeekCalendarFragment.ARGUMENT_CURRENT_DATE_TEXT_COLOR
+//                    , ContextCompat.getColor(this, R.color.md_green_500));
+
+            // Sets color to the primary views (Month name and dates)
+//        args.putInt(WeekCalendarFragment.ARGUMENT_PRIMARY_TEXT_COLOR
+//                   , ContextCompat.getColor(this,R.color.md_yellow_500));
+
+            // Sets text size of dates
+//        args.putInt(WeekCalendarFragment.ARGUMENT_DAY_TEXT_SIZE, 18);
 //
-//        args.putInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_TEXT_COLOR, ContextCompat.getColor(this, R.color.md_green_500));//set text color to the currentdate
-
-//        args.putInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR, ContextCompat.getColor(this,R.color.md_yellow_500));//Set color to the primary views (Month name and dates)
-
-//        args.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_SIZE, 18); // set text size of dates
+            // Sets typeface style of date texts
+//        args.putInt(WeekCalendarFragment.ARGUMENT_DAY_TEXT_STYLE, Typeface.BOLD_ITALIC);
 //
-//        args.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_STYLE, Typeface.BOLD_ITALIC); // set typeface style of dates
-//
-//        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_COLOR, ContextCompat.getColor(this,R.color.md_green_500));//Set color to the secondary views (now view and week names)
-//
-//        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_SIZE, 18); // set typeface size of secondary text views (now view and week names)
-//
-//        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_STYLE, Typeface.ITALIC); // set typeface style of secondary text views (now view and week names)
+            // Sets color to the secondary views (now view and week names)
+   /*     args.putInt(WeekCalendarFragment.ARGUMENT_SECONDARY_TEXT_COLOR
+                  , ContextCompat.getColor(this,R.color.md_green_500));*/
 
-            args.putString(RWeekCalendar.ARGUMENT_DAY_HEADER_LENGTH, WeekCalendarOptions.DAY_HEADER_LENGTH_THREE_LETTERS); // pick between three or one date header letters ex. "Sun" or "S"
-            // two options - 1. WeekCalendarOptions.DAY_HEADER_LENGTH_THREE_LETTERS,  2. WeekCalendarOptions.DAY_HEADER_LENGTH_ONE_LETTER
+            // Sets typeface size of secondary text views (now view and week names)
+//        args.putInt(WeekCalendarFragment.ARGUMENT_SECONDARY_TEXT_SIZE, 18);
 
+            // Sets typeface style of secondary text views (now view and week names)
+//        args.putInt(WeekCalendarFragment.ARGUMENT_SECONDARY_TEXT_STYLE, Typeface.ITALIC);
+
+            // Picks between three or one date header letters ex. "Sun" or "S"
+            // two options:
+            // 1. WeekCalendarOptions.DAY_HEADER_LENGTH_THREE_LETTERS
+            // 2. WeekCalendarOptions.DAY_HEADER_LENGTH_ONE_LETTER
+            args.putString(WeekCalendarFragment.ARGUMENT_DAY_HEADER_LENGTH
+                    , WeekCalendarOptions.DAY_HEADER_LENGTH_THREE_LETTERS);
+
+            // Days that have events
             ArrayList<Calendar> eventDays = new ArrayList<>();
             eventDays.add(Calendar.getInstance());
             eventDays.add(Calendar.getInstance());
             eventDays.add(Calendar.getInstance());
             eventDays.get(1).add(Calendar.DAY_OF_MONTH, 1);
             eventDays.get(2).add(Calendar.WEEK_OF_MONTH, 1);
-            args.putSerializable(RWeekCalendar.ARGUMENT_EVENT_DAYS, eventDays); // add days that have events
+            args.putSerializable(WeekCalendarFragment.ARGUMENT_EVENT_DAYS, eventDays);
 
-            args.putString(RWeekCalendar.ARGUMENT_EVENT_COLOR, WeekCalendarOptions.EVENT_COLOR_YELLOW); // color of event dots
-            // 5 options - 1. WeekCalendarOptions.EVENT_COLOR_YELLOW, 2. WeekCalendarOptions.EVENT_COLOR_BLUE, 3. WeekCalendarOptions.EVENT_COLOR_GREEN
-            // , 4. WeekCalendarOptions.EVENT_COLOR_RED, 5. WeekCalendarOptions.EVENT_COLOR_WHITE
+            // Sets the color of event dots
+            // 5 options:
+            // 1. WeekCalendarOptions.EVENT_COLOR_YELLOW, 2. WeekCalendarOptions.EVENT_COLOR_BLUE
+            // 3. WeekCalendarOptions.EVENT_COLOR_GREEN, 4. WeekCalendarOptions.EVENT_COLOR_RED
+            // 5. WeekCalendarOptions.EVENT_COLOR_WHITE
+            args.putString(WeekCalendarFragment.ARGUMENT_EVENT_COLOR
+                    , WeekCalendarOptions.EVENT_COLOR_YELLOW);
 
-//---------------------------------------------------------------------------------------------------------------------//
-
-            rCalendarFragment.setArguments(args);
+//------------------------------------------------------------------------------------------------//
+            mWeekCalendarFragment.setArguments(args);
 
             // Attach to the activity
             FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-            t.replace(R.id.container, rCalendarFragment, RWeekCalendar.class.getSimpleName());
+            t.replace(R.id.container, mWeekCalendarFragment, WeekCalendarFragment.class.getSimpleName());
             t.commit();
         }
 
@@ -121,29 +147,34 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
             @Override
             public void onSelectPicker() {
                 //User can use any type of pickers here the below picker is only Just a example
-                DatePickerDialog.newInstance(Sample.this, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH)).show(getFragmentManager(), "datePicker");
+                DatePickerDialog.newInstance(Sample.this,
+                        Calendar.getInstance().get(Calendar.YEAR),
+                        Calendar.getInstance().get(Calendar.MONTH),
+                        Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+                        .show(getFragmentManager(), "datePicker");
             }
 
             @Override
             public void onSelectDate(LocalDateTime mSelectedDate) {
                 //callback when a date is selcted
-                mDateSelectedTv.setText("" + mSelectedDate.getDayOfMonth() + "-" + mSelectedDate.getMonthOfYear() + "-" + mSelectedDate.getYear());
+                mDateSelectedTv.setText(""
+                        + mSelectedDate.getDayOfMonth()
+                        + "-"
+                        + mSelectedDate.getMonthOfYear()
+                        + "-"
+                        + mSelectedDate.getYear());
             }
         };
-
         //setting the listener
-        rCalendarFragment.setCalenderListener(listener);
+        mWeekCalendarFragment.setCalenderListener(listener);
     }
 
     @Override
     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-
-        //This is the call back from picker used in the sample you can use custom or any other picker
-
+        //This is the call back from picker used in the sample. You can use custom or any other picker
         //IMPORTANT: get the year,month and date from picker you using and call setDateWeek method
         Calendar calendar = Calendar.getInstance();
-
         calendar.set(year, monthOfYear, dayOfMonth);
-        rCalendarFragment.setDateWeek(calendar);//Sets the selected date from Picker
+        mWeekCalendarFragment.setDateWeek(calendar);//Sets the selected date from Picker
     }
 }

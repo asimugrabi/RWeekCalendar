@@ -71,14 +71,14 @@ public class WeekFragment extends Fragment {
         WeekFragment f = new WeekFragment();
         Bundle b = new Bundle();
         b.putInt(POSITION_KEY, position);
-        b.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, selectorDateIndicatorValue);
-        b.putInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR, selectorHighlightColor);
-        b.putInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_TEXT_COLOR, currentDateIndicatorValue);
-        b.putInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR, primaryTextColor);
-        b.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_SIZE, primaryTextSize);
-        b.putInt(RWeekCalendar.ARGUMENT_DAY_TEXT_STYLE, primaryTextStyle);
-        b.putSerializable(RWeekCalendar.ARGUMENT_EVENT_DAYS, eventDays);
-        b.putString(RWeekCalendar.ARGUMENT_EVENT_COLOR, eventColor);
+        b.putString(WeekCalendarFragment.ARGUMENT_SELECTED_DATE_BACKGROUND, selectorDateIndicatorValue);
+        b.putInt(WeekCalendarFragment.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR, selectorHighlightColor);
+        b.putInt(WeekCalendarFragment.ARGUMENT_CURRENT_DATE_TEXT_COLOR, currentDateIndicatorValue);
+        b.putInt(WeekCalendarFragment.ARGUMENT_PRIMARY_TEXT_COLOR, primaryTextColor);
+        b.putInt(WeekCalendarFragment.ARGUMENT_DAY_TEXT_SIZE, primaryTextSize);
+        b.putInt(WeekCalendarFragment.ARGUMENT_DAY_TEXT_STYLE, primaryTextStyle);
+        b.putSerializable(WeekCalendarFragment.ARGUMENT_EVENT_DAYS, eventDays);
+        b.putString(WeekCalendarFragment.ARGUMENT_EVENT_COLOR, eventColor);
         f.setArguments(b);
         return f;
     }
@@ -122,17 +122,17 @@ public class WeekFragment extends Fragment {
         mCurrentDate = AppController.getInstance().getDate();
         /*Setting the Resources values and Customization values to the views*/
         String identifierName = getArguments()
-                .getString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND);
+                .getString(WeekCalendarFragment.ARGUMENT_SELECTED_DATE_BACKGROUND);
         if (identifierName != null) {
             Resources resources = getActivity().getResources();
             mSelectorDateIndicatorValue = resources.getIdentifier(identifierName, "drawable",
-                    RWeekCalendar.PACKAGE_NAME_VALUE);
+                    WeekCalendarFragment.PACKAGE_NAME_VALUE);
         }
 
         mCurrentDateIndicatorValue = getArguments()
-                .getInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_TEXT_COLOR);
+                .getInt(WeekCalendarFragment.ARGUMENT_CURRENT_DATE_TEXT_COLOR);
         mSelectorHighlightColor = getArguments()
-                .getInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR);
+                .getInt(WeekCalendarFragment.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR);
 
         mDatePosition = getArguments().getInt(POSITION_KEY);
         int addDays = mDatePosition * 7;
@@ -154,8 +154,8 @@ public class WeekFragment extends Fragment {
             mStartDate = mStartDate.plusDays(1); //Next day
         }
 
-        int primaryTextStyle = getArguments().getInt(RWeekCalendar.ARGUMENT_DAY_TEXT_STYLE, -1);
-        int primaryTextSize = getArguments().getInt(RWeekCalendar.ARGUMENT_DAY_TEXT_SIZE, 0);
+        int primaryTextStyle = getArguments().getInt(WeekCalendarFragment.ARGUMENT_DAY_TEXT_STYLE, -1);
+        int primaryTextSize = getArguments().getInt(WeekCalendarFragment.ARGUMENT_DAY_TEXT_SIZE, 0);
         if (primaryTextSize > 0 || primaryTextStyle > -1) {
             for (TextView tv : mTextViewArray) {
                 if (primaryTextSize > 0) {
@@ -168,15 +168,15 @@ public class WeekFragment extends Fragment {
         }
 
         /*Setting color in the week views*/
-        mPrimaryTextColor = getArguments().getInt(RWeekCalendar.ARGUMENT_PRIMARY_TEXT_COLOR);
+        mPrimaryTextColor = getArguments().getInt(WeekCalendarFragment.ARGUMENT_PRIMARY_TEXT_COLOR);
         for (TextView tv : mTextViewArray) {
             tv.setTextColor(mPrimaryTextColor);
         }
 
         ArrayList<LocalDateTime> eventDays = (ArrayList<LocalDateTime>) getArguments()
-                .getSerializable(RWeekCalendar.ARGUMENT_EVENT_DAYS);
+                .getSerializable(WeekCalendarFragment.ARGUMENT_EVENT_DAYS);
         int eventColorDrawable = getEventColorDrawable(getArguments()
-                .getString(RWeekCalendar.ARGUMENT_EVENT_COLOR));
+                .getString(WeekCalendarFragment.ARGUMENT_EVENT_COLOR));
 
         /*Displaying the days in the week views*/
         int dayOfWeek = 0;
@@ -265,7 +265,7 @@ public class WeekFragment extends Fragment {
          */
         if (isVisibleToUser) {
             if (mDateInWeekArray.size() > 0)
-                RWeekCalendar.getsWeekCalendarInstance().getSelectedDate(mDateInWeekArray.get(0));
+                WeekCalendarFragment.getsWeekCalendarInstance().getSelectedDate(mDateInWeekArray.get(0));
         }
         if (mSelectedDate != null) {
             setSelectedDateBackground(mTextViewArray[0]);
@@ -276,7 +276,7 @@ public class WeekFragment extends Fragment {
      * Passing the selected date info
      */
     public void mSelectedDateInfo(int position) {
-        RWeekCalendar.getsWeekCalendarInstance().getSelectedDate(mDateInWeekArray.get(position));
+        WeekCalendarFragment.getsWeekCalendarInstance().getSelectedDate(mDateInWeekArray.get(position));
         mSelectedDate = mDateInWeekArray.get(position);
         AppController.getInstance().setSelected(mSelectedDate);
     }

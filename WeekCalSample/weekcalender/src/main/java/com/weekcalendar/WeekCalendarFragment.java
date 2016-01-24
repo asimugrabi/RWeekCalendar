@@ -50,7 +50,7 @@ import java.util.Calendar;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-public class RWeekCalendar extends Fragment {
+public class WeekCalendarFragment extends Fragment {
     //Bundle Keys
     public static final String ARGUMENT_SELECTED_DATE_BACKGROUND = "bg:select:date";
     public static final String ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR = "selected:date:highlight:color";
@@ -84,7 +84,7 @@ public class RWeekCalendar extends Fragment {
 
     private ArrayList<LocalDateTime> mEventDays;
 
-    private static RWeekCalendar sWeekCalendarInstance;
+    private static WeekCalendarFragment sWeekCalendarInstance;
 
     private boolean mDisplayDatePicker = true;
     //initial values of calender property
@@ -100,7 +100,7 @@ public class RWeekCalendar extends Fragment {
     /**
      * creating instance of the calender class
      */
-    public static synchronized RWeekCalendar getsWeekCalendarInstance() {
+    public static synchronized WeekCalendarFragment getsWeekCalendarInstance() {
         return sWeekCalendarInstance;
     }
 
@@ -307,7 +307,7 @@ public class RWeekCalendar extends Fragment {
         if (getArguments().containsKey(ARGUMENT_NOW_BACKGROUND) && mDisplayDatePicker) {
             Resources resources = getResources();
             mNowView.setBackgroundResource(resources.getIdentifier(
-                    getArguments().getString(RWeekCalendar.ARGUMENT_NOW_BACKGROUND)
+                    getArguments().getString(WeekCalendarFragment.ARGUMENT_NOW_BACKGROUND)
                     , "drawable"
                     , PACKAGE_NAME_VALUE));
         }
