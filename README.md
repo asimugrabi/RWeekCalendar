@@ -23,7 +23,7 @@ In your module
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        compile 'com.github.asimugrabi:RWeekCalendar:1.0.0'
+        compile 'com.github.asimugrabi:RWeekCalendar:2.0.0'
     }
 
 
@@ -155,7 +155,10 @@ Usage:
 		mWeekCalendarFragment.setDateWeek(Calendar calendar);
 ```
 
+Example
+-------
 
+[Sample Class!](WeekCalSample/app/src/main/java/com/weekcalendar/sample/Sample.java)
 
 ## License
 
