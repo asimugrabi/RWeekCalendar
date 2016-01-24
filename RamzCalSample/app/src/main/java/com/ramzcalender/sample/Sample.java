@@ -7,7 +7,6 @@ import com.ramzcalender.utils.WeekCalendarOptions;
 
 import org.joda.time.LocalDateTime;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -61,19 +60,19 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
             Bundle args = new Bundle();
 
             /*Should add this attribute if you adding  the ARGUMENT_NOW_BACKGROUND or ARGUMENT_SELECTED_DATE_BACKGROUND Attribute*/
-            args.putString(RWeekCalendar.PACKAGE_NAME, getApplicationContext().getPackageName());
+            args.putString(RWeekCalendar.ARGUMENT_PACKAGE_NAME, getApplicationContext().getPackageName());
 
             /* IMPORTANT: Customization for the calender commenting or un commenting any of the attribute below will reflect change in calendar*/
 
 //---------------------------------------------------------------------------------------------------------------------//
 
-            args.putInt(RWeekCalendar.ARGUMENT_CALENDER_BACKGROUND_COLOR, ContextCompat.getColor(this, R.color.md_deep_purple_300));//set background color to calender
+            args.putInt(RWeekCalendar.ARGUMENT_CALENDER_BACKGROUND_COLOR, ContextCompat.getColor(this, R.color.md_deep_purple_500));//set background color to calender
 
-//        args.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, "bg_select");//set background to the selected dates - null to disable
+        args.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, "bg_select");//set background to the selected dates - null to disable
 
-            args.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, null);//set background to the selected dates
+//            args.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, null);//set background to the selected dates
 
-            args.putInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR, Color.BLUE);
+//            args.putInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR,ContextCompat.getColor(this, R.color.md_pink_200)); // set text color for the selected date
 
             args.putInt(RWeekCalendar.ARGUMENT_WEEK_COUNT, 1000);//add N weeks from the current week (53 or 52 week is one year)
 
@@ -89,11 +88,12 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
 
 //        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_COLOR, ContextCompat.getColor(this,R.color.md_green_500));//Set color to the secondary views (now view and week names)
 
-//        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_SIZE, 18); // set typeface size of secondary text views
+//        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_SIZE, 18); // set typeface size of secondary text views (now view and week names)
 
-//        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_STYLE, Typeface.ITALIC); // set typeface style of secondary text views
+//        args.putInt(RWeekCalendar.ARGUMENT_SECONDARY_TEXT_STYLE, Typeface.ITALIC); // set typeface style of secondary text views (now view and week names)
 
-            args.putString(RWeekCalendar.ARGUMENT_DAY_HEADER_LENGTH, WeekCalendarOptions.DAY_HEADER_LENGTH_ONE_LETTER);
+            args.putString(RWeekCalendar.ARGUMENT_DAY_HEADER_LENGTH, WeekCalendarOptions.DAY_HEADER_LENGTH_THREE_LETTERS); // pick between three or one date header letters ex. "Sun" or "S"
+            // two options - 1. WeekCalendarOptions.DAY_HEADER_LENGTH_THREE_LETTERS,  2. WeekCalendarOptions.DAY_HEADER_LENGTH_ONE_LETTER
 
             args.putBoolean(RWeekCalendar.ARGUMENT_DISPLAY_DATE_PICKER, false);
 
@@ -103,9 +103,11 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
             eventDays.add(Calendar.getInstance());
             eventDays.get(1).add(Calendar.DAY_OF_MONTH, 1);
             eventDays.get(2).add(Calendar.WEEK_OF_MONTH, 1);
-            args.putSerializable(RWeekCalendar.ARGUMENT_EVENT_DAYS, eventDays);
+            args.putSerializable(RWeekCalendar.ARGUMENT_EVENT_DAYS, eventDays); // add days that have events
 
-            args.putString(RWeekCalendar.ARGUMENT_EVENT_COLOR, WeekCalendarOptions.EVENT_COLOR_YELLOW);
+            args.putString(RWeekCalendar.ARGUMENT_EVENT_COLOR, WeekCalendarOptions.EVENT_COLOR_YELLOW); // color of event dots
+            // 5 options - 1. WeekCalendarOptions.EVENT_COLOR_YELLOW, 2. WeekCalendarOptions.EVENT_COLOR_BLUE, 3. WeekCalendarOptions.EVENT_COLOR_GREEN
+            // , 4. WeekCalendarOptions.EVENT_COLOR_RED, 5. WeekCalendarOptions.EVENT_COLOR_WHITE
 
 //---------------------------------------------------------------------------------------------------------------------//
 

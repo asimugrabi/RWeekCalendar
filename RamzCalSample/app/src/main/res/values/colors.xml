@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-
-
     <!--Adding some list of colors-->
-
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="symptom_color_selected">#003366</color>
@@ -34,14 +30,9 @@
 
     <!-- google's material design colours from
   http://www.google.com/design/spec/style/color.html#color-ui-color-palette -->
-    <!--reds-->
 
-    <!--
-        <color name="primary_dark_color">#66009688</color>
-    -->
-
-    <color name="primarydark">@color/md_blue_700</color>
-    <color name="primary">@color/md_blue_500</color>
+    <color name="primarydark">@color/md_deep_purple_700</color>
+    <color name="primary">@color/md_deep_purple_500</color>
     <color name="primaryaccent">@color/md_green_500</color>
     <color name="progress_color">@color/md_green_500</color>
     <color name="base_background_color">#ffff</color>

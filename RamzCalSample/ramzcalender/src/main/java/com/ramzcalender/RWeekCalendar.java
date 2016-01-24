@@ -69,35 +69,40 @@ public class RWeekCalendar extends Fragment {
     public static final String ARGUMENT_EVENT_DAYS = "event:days";
     public static final String ARGUMENT_EVENT_COLOR = "event:color";
 
-    public static final String PACKAGE_NAME = "package";
-    public static final String POSITION_KEY = "pos";
+    public static final String ARGUMENT_PACKAGE_NAME = "package";
     public static String PACKAGE_NAME_VALUE = "com.ramzcalender";
 
-    LocalDateTime mStartDate, mSelectedDate;
-    TextView mMonthView, mNowView, mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv, mThursdayTv;
-    TextView[] mDayHeaders;
+    private LocalDateTime mStartDate, mSelectedDate;
 
-    TextView mFridayTv, mSaturdayTv;
-    ViewPager mViewPager;
-    LinearLayout mBackground;
-    ViewGroup mFrameDatePicker;
-    CalenderListener mCalenderListener;
+    private TextView mMonthView, mNowView, mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv;
+    private TextView mThursdayTv, mFridayTv, mSaturdayTv;
+    private TextView[] mDayHeaders;
+    private ViewPager mViewPager;
+    private LinearLayout mBackground;
+    private ViewGroup mFrameDatePicker;
+    private CalenderListener mCalenderListener;
 
     private ArrayList<LocalDateTime> mEventDays;
 
     private static RWeekCalendar sWeekCalendarInstance;
 
-    CalenderAdapter mAdapter;
-    boolean mDisplayDatePicker = true;
+    private boolean mDisplayDatePicker = true;
     //initial values of calender property
-    String mSelectorDateIndicatorValue = "bg_red";
-    int mSelectorHighlightColor = -1;
-    int mCurrentDateIndicatorValue = Color.BLACK;
-    int mPrimaryTextColor = Color.WHITE;
-    int mPrimaryTextSize;
-    int mPrimaryTextStyle = -1;
-    String mEventColor = WeekCalendarOptions.EVENT_COLOR_WHITE;
-    int mWeekCount = 53;//one year
+    private String mSelectorDateIndicatorValue = "bg_red";
+    private int mSelectorHighlightColor = -1;
+    private int mCurrentDateIndicatorValue = Color.BLACK;
+    private int mPrimaryTextColor = Color.WHITE;
+    private int mPrimaryTextSize;
+    private int mPrimaryTextStyle = -1;
+    private String mEventColor = WeekCalendarOptions.EVENT_COLOR_WHITE;
+    private int mWeekCount = 53;//one year
+
+    /**
+     * creating instance of the calender class
+     */
+    public static synchronized RWeekCalendar getsWeekCalendarInstance() {
+        return sWeekCalendarInstance;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -151,7 +156,8 @@ public class RWeekCalendar extends Fragment {
 
         if (mDisplayDatePicker) {
             // Setting the month name
-            mMonthView.setText(mSelectedDate.monthOfYear().getAsShortText() + " " + mSelectedDate.year().getAsShortText().toUpperCase());
+            mMonthView.setText(mSelectedDate.monthOfYear().getAsShortText()
+                    + " " + mSelectedDate.year().getAsShortText().toUpperCase());
 
             /**
              * Change view to  the date of the current week
@@ -174,15 +180,44 @@ public class RWeekCalendar extends Fragment {
                 }
             });
         }
+    }
 
+    /**
+     * Set set date of the selected week
+     */
+    public void setDateWeek(Calendar calendar) {
+        LocalDateTime ldt = LocalDateTime.fromCalendarFields(calendar);
+        AppController.getInstance().setSelected(ldt);
+        int nextPage = Weeks.weeksBetween(mStartDate, ldt).getWeeks();
+        if (nextPage >= 0 && nextPage < mWeekCount) {
+            mViewPager.setCurrentItem(nextPage);
+            mCalenderListener.onSelectDate(ldt);
+            WeekFragment fragment = (WeekFragment) mViewPager.getAdapter()
+                    .instantiateItem(mViewPager, nextPage);
+            fragment.ChangeSelector(ldt);
+        }
+    }
+
+    /**
+     * Notify the selected date main page
+     */
+    public void getSelectedDate(LocalDateTime mSelectedDate) {
+        mCalenderListener.onSelectDate(mSelectedDate);
+    }
+
+    /**
+     * Set setCalenderListener when user click on a date
+     */
+    public void setCalenderListener(CalenderListener calenderListener) {
+        this.mCalenderListener = calenderListener;
     }
 
     private void setupViewPager() {
-        mAdapter = new CalenderAdapter(getActivity().getSupportFragmentManager());
-        if (getArguments().containsKey(PACKAGE_NAME)) {
-            PACKAGE_NAME_VALUE = getArguments().getString(PACKAGE_NAME);//its for showing the resource value from the parent package
+        CalenderAdapter adapter = new CalenderAdapter(getActivity().getSupportFragmentManager());
+        if (getArguments().containsKey(ARGUMENT_PACKAGE_NAME)) {
+            PACKAGE_NAME_VALUE = getArguments().getString(ARGUMENT_PACKAGE_NAME);//its for showing the resource value from the parent package
         }
-        mViewPager.setAdapter(mAdapter);
+        mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(mWeekCount / 2);
         /*Week change Listener*/
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -196,7 +231,8 @@ public class RWeekCalendar extends Fragment {
                 int addDays = weekNumber * 7;
                 mSelectedDate = mStartDate.plusDays(addDays); //add 7 days to the selected date
                 if (mDisplayDatePicker) {
-                    mMonthView.setText(mSelectedDate.monthOfYear().getAsShortText() + "-" + mSelectedDate.year().getAsShortText().toUpperCase());
+                    mMonthView.setText(mSelectedDate.monthOfYear().getAsShortText()
+                            + "-" + mSelectedDate.year().getAsShortText().toUpperCase());
                     if (weekNumber == 0) {
                         //the first week comes to view
                         mNowView.setVisibility(View.GONE);
@@ -290,42 +326,6 @@ public class RWeekCalendar extends Fragment {
         }
         String dayHeaderLength = getArguments().getString(ARGUMENT_DAY_HEADER_LENGTH);
         setHeaderLength(dayHeaderLength);
-    }
-
-    /**
-     * Set set date of the selected week
-     */
-    public void setDateWeek(Calendar calendar) {
-        LocalDateTime ldt = LocalDateTime.fromCalendarFields(calendar);
-        AppController.getInstance().setSelected(ldt);
-        int nextPage = Weeks.weeksBetween(mStartDate, ldt).getWeeks();
-        if (nextPage >= 0 && nextPage < mWeekCount) {
-            mViewPager.setCurrentItem(nextPage);
-            mCalenderListener.onSelectDate(ldt);
-            WeekFragment fragment = (WeekFragment) mViewPager.getAdapter().instantiateItem(mViewPager, nextPage);
-            fragment.ChangeSelector(ldt);
-        }
-    }
-
-    /**
-     * creating instance of the calender class
-     */
-    public static synchronized RWeekCalendar getsWeekCalendarInstance() {
-        return sWeekCalendarInstance;
-    }
-
-    /**
-     * Notify the selected date main page
-     */
-    public void getSelectedDate(LocalDateTime mSelectedDate) {
-        mCalenderListener.onSelectDate(mSelectedDate);
-    }
-
-    /**
-     * Set setCalenderListener when user click on a date
-     */
-    public void setCalenderListener(CalenderListener calenderListener) {
-        this.mCalenderListener = calenderListener;
     }
 
     private void setHeaderLength(String dayHeaderLength) {

@@ -46,25 +46,31 @@ import java.util.Calendar;
  * SOFTWARE..
  */
 public class WeekFragment extends Fragment {
-    LocalDateTime mSelectedDate, mStartDate, mCurrentDate;
+    public static final String POSITION_KEY = "pos";
 
-    TextView mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv, mThursdayTv, mFridayTv, mSaturdayTv;
-    TextView[] mTextViewArray;
-    ImageView[] mImageViewArray;
+    private LocalDateTime mSelectedDate, mStartDate, mCurrentDate;
 
-    int mDatePosition = 0, mSelectorDateIndicatorValue = 0, mCurrentDateIndicatorValue = 0;
-    int mCurrentDateIndex = -1;
-    int mPrimaryTextColor, mSelectorHighlightColor = -1;
-    ArrayList<LocalDateTime> mDateInWeekArray = new ArrayList<>();
+    private TextView mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv, mThursdayTv, mFridayTv;
+    private TextView mSaturdayTv;
+    private TextView[] mTextViewArray;
+    private ImageView[] mImageViewArray;
+
+    private int mDatePosition = 0, mSelectorDateIndicatorValue = 0, mCurrentDateIndicatorValue = 0;
+    private int mCurrentDateIndex = -1;
+    private int mPrimaryTextColor, mSelectorHighlightColor = -1;
+
+    private ArrayList<LocalDateTime> mDateInWeekArray = new ArrayList<>();
 
     /**
      * Set Values including customizable info
      */
     public static WeekFragment newInstance(int position, String selectorDateIndicatorValue
-            , int currentDateIndicatorValue, int primaryTextColor, int primaryTextSize, int primaryTextStyle, int selectorHighlightColor, ArrayList<LocalDateTime> eventDays, String eventColor) {
+            , int currentDateIndicatorValue, int primaryTextColor, int primaryTextSize
+            , int primaryTextStyle, int selectorHighlightColor, ArrayList<LocalDateTime> eventDays
+            , String eventColor) {
         WeekFragment f = new WeekFragment();
         Bundle b = new Bundle();
-        b.putInt(RWeekCalendar.POSITION_KEY, position);
+        b.putInt(POSITION_KEY, position);
         b.putString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND, selectorDateIndicatorValue);
         b.putInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR, selectorHighlightColor);
         b.putInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_TEXT_COLOR, currentDateIndicatorValue);
@@ -115,17 +121,20 @@ public class WeekFragment extends Fragment {
         mStartDate = AppController.getInstance().getDate();
         mCurrentDate = AppController.getInstance().getDate();
         /*Setting the Resources values and Customization values to the views*/
-        String identifierName = getArguments().getString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND);
+        String identifierName = getArguments()
+                .getString(RWeekCalendar.ARGUMENT_SELECTED_DATE_BACKGROUND);
         if (identifierName != null) {
             Resources resources = getActivity().getResources();
             mSelectorDateIndicatorValue = resources.getIdentifier(identifierName, "drawable",
                     RWeekCalendar.PACKAGE_NAME_VALUE);
         }
 
-        mCurrentDateIndicatorValue = getArguments().getInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_TEXT_COLOR);
-        mSelectorHighlightColor = getArguments().getInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR);
+        mCurrentDateIndicatorValue = getArguments()
+                .getInt(RWeekCalendar.ARGUMENT_CURRENT_DATE_TEXT_COLOR);
+        mSelectorHighlightColor = getArguments()
+                .getInt(RWeekCalendar.ARGUMENT_SELECTED_DATE_HIGHLIGHT_COLOR);
 
-        mDatePosition = getArguments().getInt(RWeekCalendar.POSITION_KEY);
+        mDatePosition = getArguments().getInt(POSITION_KEY);
         int addDays = mDatePosition * 7;
 
         mStartDate = mStartDate.plusDays(addDays);//Adding the 7days to the previous week
@@ -166,7 +175,8 @@ public class WeekFragment extends Fragment {
 
         ArrayList<LocalDateTime> eventDays = (ArrayList<LocalDateTime>) getArguments()
                 .getSerializable(RWeekCalendar.ARGUMENT_EVENT_DAYS);
-        int eventColorDrawable = getEventColorDrawable(getArguments().getString(RWeekCalendar.ARGUMENT_EVENT_COLOR));
+        int eventColorDrawable = getEventColorDrawable(getArguments()
+                .getString(RWeekCalendar.ARGUMENT_EVENT_COLOR));
 
         /*Displaying the days in the week views*/
         int dayOfWeek = 0;
@@ -183,7 +193,8 @@ public class WeekFragment extends Fragment {
         /*if the selected week is the current week indicates the current day*/
         if (mDatePosition == 0) {
             for (int i = 0; i < 7; i++) {
-                if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == mDateInWeekArray.get(i).getDayOfMonth()) {
+                if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+                        == mDateInWeekArray.get(i).getDayOfMonth()) {
                     mCurrentDateIndex = i;
                     mTextViewArray[i].setTextColor(mCurrentDateIndicatorValue);
                 }
