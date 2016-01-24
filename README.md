@@ -23,7 +23,7 @@ In your module
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        compile 'com.github.asimugrabi:RWeekCalendar:2.0.0'
+        compile 'com.github.asimugrabi:Week-Calendar-Fragment:2.0.0'
     }
 
 
@@ -128,20 +128,12 @@ Usage:
       CalendarListener listener=new CalendarListener() {
             @Override
            public void onSelectPicker() {
-
-           //Allow user to show picker you can use custum picker or any othe picker library
-
-         
-
-
+				// Show picker. You can use custom picker or any other picker library
             }
 
             @Override
             public void onSelectDate(LocalDateTime mSelectedDate) {
-
-                //callback when a date is selcted
-
-
+                // callback when a date is selected
             }
         };
 
@@ -158,13 +150,13 @@ Usage:
 Example
 -------
 
-[Sample Class!](WeekCalSample/app/src/main/java/com/weekcalendar/sample/Sample.java)
+[Sample Usage](WeekCalSample/app/src/main/java/com/weekcalendar/sample/Sample.java)
 
 ## License
 
     The MIT License (MIT)
 
-    Copyright (c) 2015 Ramesh M Nair
+    Copyright (c) 2015 Ramesh M Nair, Asi Mugrabi
  
      Permission is hereby granted, free of charge, to any person obtaining a copy
      of this software and associated documentation files (the "Software"), to deal
