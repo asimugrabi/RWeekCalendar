@@ -96,6 +96,7 @@ public class WeekCalendarFragment extends Fragment {
     private int mPrimaryTextStyle = -1;
     private String mEventColor = WeekCalendarOptions.EVENT_COLOR_WHITE;
     private int mWeekCount = 53;//one year
+    private int mMiddlePoint = mWeekCount / 2;
 
     /**
      * creating instance of the calender class
@@ -143,6 +144,8 @@ public class WeekCalendarFragment extends Fragment {
         mNowView.setVisibility(View.GONE);
 
         handleCustomizationArguments();
+        // update middle point of view pager
+        mMiddlePoint = mWeekCount / 2;
         /*Setting Calender Adapter*/
         setupViewPager();
 
@@ -168,7 +171,7 @@ public class WeekCalendarFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     mCalenderListener.onSelectDate(mStartDate);
-                    mViewPager.setCurrentItem(0);
+                    mViewPager.setCurrentItem(mMiddlePoint);
                 }
             });
 
@@ -191,11 +194,15 @@ public class WeekCalendarFragment extends Fragment {
         LocalDateTime ldt = LocalDateTime.fromCalendarFields(calendar);
         AppController.getInstance().setSelected(ldt);
         int nextPage = Weeks.weeksBetween(mStartDate, ldt).getWeeks();
-        if (nextPage >= 0 && nextPage < mWeekCount) {
-            mViewPager.setCurrentItem(nextPage);
+        if (nextPage >= -mMiddlePoint && nextPage < mMiddlePoint) {
+            if (nextPage < 0) {
+                // make selected date to previous week on viewpager onSelected
+                --nextPage;
+            }
+            mViewPager.setCurrentItem(nextPage + mMiddlePoint);
             mCalenderListener.onSelectDate(ldt);
             WeekFragment fragment = (WeekFragment) mViewPager.getAdapter()
-                    .instantiateItem(mViewPager, nextPage);
+                    .instantiateItem(mViewPager, nextPage + mMiddlePoint);
             fragment.ChangeSelector(ldt);
         }
     }
@@ -220,7 +227,7 @@ public class WeekCalendarFragment extends Fragment {
             PACKAGE_NAME_VALUE = getArguments().getString(ARGUMENT_PACKAGE_NAME);//its for showing the resource value from the parent package
         }
         mViewPager.setAdapter(adapter);
-        mViewPager.setCurrentItem(mWeekCount / 2);
+        mViewPager.setCurrentItem(mMiddlePoint);
         /*Week change Listener*/
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -230,12 +237,12 @@ public class WeekCalendarFragment extends Fragment {
 
             @Override
             public void onPageSelected(int weekNumber) {
-                int addDays = weekNumber * 7;
+                int addDays = (weekNumber - mMiddlePoint) * 7;
                 mSelectedDate = mStartDate.plusDays(addDays); //add 7 days to the selected date
                 if (mDisplayDatePicker) {
                     mMonthView.setText(mSelectedDate.monthOfYear().getAsShortText()
                             + "-" + mSelectedDate.year().getAsShortText().toUpperCase());
-                    if (weekNumber == 0) {
+                    if (weekNumber == mMiddlePoint) {
                         //the first week comes to view
                         mNowView.setVisibility(View.GONE);
                     } else {
@@ -359,7 +366,7 @@ public class WeekCalendarFragment extends Fragment {
         @Override
         public WeekFragment getItem(int pos) {
             return WeekFragment.newInstance(
-                    pos - mWeekCount / 2,
+                    pos - mMiddlePoint,
                     mSelectorDateIndicatorValue,
                     mCurrentDateIndicatorValue,
                     mPrimaryTextColor,
