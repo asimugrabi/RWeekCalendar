@@ -157,7 +157,9 @@ public class WeekCalendarFragment extends Fragment {
         mStartDate = mCal.getStartDate();//sets start date from CalUtil
 
         //Setting the selected date listener
-        mCalenderListener.onSelectDate(mStartDate);
+        if (mCalenderListener != null) {
+            mCalenderListener.onSelectDate(mStartDate);
+        }
 
         if (mDisplayDatePicker) {
             // Setting the month name
@@ -170,7 +172,9 @@ public class WeekCalendarFragment extends Fragment {
             mNowView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mCalenderListener.onSelectDate(mStartDate);
+                    if (mCalenderListener != null) {
+                        mCalenderListener.onSelectDate(mStartDate);
+                    }
                     mViewPager.setCurrentItem(mMiddlePoint);
                 }
             });
@@ -181,7 +185,9 @@ public class WeekCalendarFragment extends Fragment {
             mMonthView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mCalenderListener.onSelectPicker();
+                    if (mCalenderListener != null) {
+                        mCalenderListener.onSelectPicker();
+                    }
                 }
             });
         }
@@ -200,7 +206,9 @@ public class WeekCalendarFragment extends Fragment {
                 --nextPage;
             }
             mViewPager.setCurrentItem(nextPage + mMiddlePoint);
-            mCalenderListener.onSelectDate(ldt);
+            if (mCalenderListener != null) {
+                mCalenderListener.onSelectDate(ldt);
+            }
             WeekFragment fragment = (WeekFragment) mViewPager.getAdapter()
                     .instantiateItem(mViewPager, nextPage + mMiddlePoint);
             fragment.ChangeSelector(ldt);
@@ -211,7 +219,9 @@ public class WeekCalendarFragment extends Fragment {
      * Notify the selected date main page
      */
     public void getSelectedDate(LocalDateTime mSelectedDate) {
-        mCalenderListener.onSelectDate(mSelectedDate);
+        if (mCalenderListener != null) {
+            mCalenderListener.onSelectDate(mSelectedDate);
+        }
     }
 
     /**
@@ -223,9 +233,6 @@ public class WeekCalendarFragment extends Fragment {
 
     private void setupViewPager() {
         CalenderAdapter adapter = new CalenderAdapter(getActivity().getSupportFragmentManager());
-        if (getArguments().containsKey(ARGUMENT_PACKAGE_NAME)) {
-            PACKAGE_NAME_VALUE = getArguments().getString(ARGUMENT_PACKAGE_NAME);//its for showing the resource value from the parent package
-        }
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(mMiddlePoint);
         /*Week change Listener*/
@@ -259,6 +266,13 @@ public class WeekCalendarFragment extends Fragment {
     }
 
     private void handleCustomizationArguments() {
+        if (getArguments() == null) {
+            return;
+        }
+        if (getArguments().containsKey(ARGUMENT_PACKAGE_NAME)) {
+            //its for showing the resource value from the parent package
+            PACKAGE_NAME_VALUE = getArguments().getString(ARGUMENT_PACKAGE_NAME);
+        }
         if (getArguments().containsKey(ARGUMENT_CALENDER_BACKGROUND_COLOR)) {
             mBackground.setBackgroundColor(getArguments().getInt(ARGUMENT_CALENDER_BACKGROUND_COLOR));
         }
