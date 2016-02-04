@@ -200,11 +200,12 @@ public class WeekCalendarFragment extends Fragment {
         LocalDateTime ldt = LocalDateTime.fromCalendarFields(calendar);
         AppController.getInstance().setSelected(ldt);
         int nextPage = Weeks.weeksBetween(mStartDate, ldt).getWeeks();
+        if (nextPage < 0 || (nextPage == 0 && ldt.isBefore(mStartDate))) {
+            // make selected date to previous week on viewpager onSelected:
+            // if result is negative or it is 0 weeks but earlier than week start date.
+            --nextPage;
+        }
         if (nextPage >= -mMiddlePoint && nextPage < mMiddlePoint) {
-            if (nextPage < 0) {
-                // make selected date to previous week on viewpager onSelected
-                --nextPage;
-            }
             mViewPager.setCurrentItem(nextPage + mMiddlePoint);
             if (mCalenderListener != null) {
                 mCalenderListener.onSelectDate(ldt);
