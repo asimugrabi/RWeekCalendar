@@ -263,9 +263,15 @@ public class WeekFragment extends Fragment {
         /**
          * Reset date to first day of week when week goes from the view
          */
+
         if (isVisibleToUser) {
-            if (mDateInWeekArray.size() > 0)
-                WeekCalendarFragment.getsWeekCalendarInstance().getSelectedDate(mDateInWeekArray.get(0));
+            if (mDateInWeekArray.size() > 0) {
+                // display first day of week if there is no selected date
+                if (AppController.getInstance().getSelected() == null) {
+                    WeekCalendarFragment.getsWeekCalendarInstance()
+                            .getSelectedDate(mDateInWeekArray.get(0));
+                }
+            }
         }
         if (mSelectedDate != null) {
             setSelectedDateBackground(mTextViewArray[0]);
@@ -282,7 +288,7 @@ public class WeekFragment extends Fragment {
     }
 
     /**
-     * Setting date when selected form picker
+     * Setting date when selected from picker
      */
     public void ChangeSelector(LocalDateTime mSelectedDate) {
         LocalDateTime startDate = AppController.getInstance().getDate();
