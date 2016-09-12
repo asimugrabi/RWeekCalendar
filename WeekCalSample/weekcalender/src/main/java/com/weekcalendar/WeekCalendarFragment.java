@@ -1,14 +1,5 @@
 package com.weekcalendar;
 
-import com.weekcalendar.listener.CalenderListener;
-import com.weekcalendar.utils.AppController;
-import com.weekcalendar.utils.CalUtil;
-import com.weekcalendar.utils.ViewUtils;
-import com.weekcalendar.utils.WeekCalendarOptions;
-
-import org.joda.time.LocalDateTime;
-import org.joda.time.Weeks;
-
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,6 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.weekcalendar.listener.CalenderListener;
+import com.weekcalendar.utils.AppController;
+import com.weekcalendar.utils.CalUtil;
+import com.weekcalendar.utils.ViewUtils;
+import com.weekcalendar.utils.WeekCalendarOptions;
+
+import org.joda.time.LocalDateTime;
+import org.joda.time.Weeks;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -213,6 +213,25 @@ public class WeekCalendarFragment extends Fragment {
             WeekFragment fragment = (WeekFragment) mViewPager.getAdapter()
                     .instantiateItem(mViewPager, nextPage + mMiddlePoint);
             fragment.ChangeSelector(ldt);
+        }
+    }
+
+    Calendar mPreSelectedDate;
+    /**
+     * Set date for the week calendar to start on resume
+     *
+     * @param calendar
+     */
+    public void setPreSelectedDate(Calendar calendar) {
+        mPreSelectedDate = calendar;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mPreSelectedDate != null) {
+            setDateWeek(mPreSelectedDate);
+            mPreSelectedDate = null;
         }
     }
 

@@ -1,11 +1,5 @@
 package com.weekcalendar;
 
-import com.weekcalendar.utils.AppController;
-import com.weekcalendar.utils.CalUtil;
-import com.weekcalendar.utils.WeekCalendarOptions;
-
-import org.joda.time.LocalDateTime;
-
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.weekcalendar.utils.AppController;
+import com.weekcalendar.utils.CalUtil;
+import com.weekcalendar.utils.WeekCalendarOptions;
+
+import org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,6 +49,7 @@ public class WeekFragment extends Fragment {
     public static final String POSITION_KEY = "pos";
 
     private LocalDateTime mSelectedDate, mStartDate, mCurrentDate;
+    private LocalDateTime mDirtySelector;
 
     private TextView mSundayTv, mMondayTv, mTuesdayTv, mWednesdayTv, mThursdayTv, mFridayTv;
     private TextView mSaturdayTv;
@@ -278,6 +279,15 @@ public class WeekFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mDirtySelector != null) {
+            ChangeSelector(mDirtySelector);
+            mDirtySelector = null;
+        }
+    }
+
     /**
      * Passing the selected date info
      */
@@ -291,6 +301,10 @@ public class WeekFragment extends Fragment {
      * Setting date when selected from picker
      */
     public void ChangeSelector(LocalDateTime mSelectedDate) {
+        if (mTextViewArray == null) {
+            mDirtySelector = mSelectedDate;
+            return;
+        }
         LocalDateTime startDate = AppController.getInstance().getDate();
         int addDays = mDatePosition * 7;
         startDate = startDate.plusDays(addDays);

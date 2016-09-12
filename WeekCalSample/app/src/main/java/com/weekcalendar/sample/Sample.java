@@ -1,18 +1,18 @@
 package com.weekcalendar.sample;
 
-import com.android.datetimepicker.date.DatePickerDialog;
-import com.weekcalendar.WeekCalendarFragment;
-import com.weekcalendar.listener.CalenderListener;
-import com.weekcalendar.utils.WeekCalendarOptions;
-
-import org.joda.time.LocalDateTime;
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+
+import com.android.datetimepicker.date.DatePickerDialog;
+import com.weekcalendar.WeekCalendarFragment;
+import com.weekcalendar.listener.CalenderListener;
+import com.weekcalendar.utils.WeekCalendarOptions;
+
+import org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -167,6 +167,8 @@ public class Sample extends AppCompatActivity implements DatePickerDialog.OnDate
         };
         //setting the listener
         mWeekCalendarFragment.setCalenderListener(listener);
+
+        mWeekCalendarFragment.setPreSelectedDate(Calendar.getInstance());
     }
 
     @Override
