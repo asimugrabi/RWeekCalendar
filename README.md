@@ -23,7 +23,7 @@ In your module
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        compile 'com.github.asimugrabi:Week-Calendar-Fragment:2.0.3'
+        compile 'com.github.asimugrabi:Week-Calendar-Fragment:2.0.6'
     }
 
 
