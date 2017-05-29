@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.weekcalendar.utils.AppController;
 import com.weekcalendar.utils.CalUtil;
@@ -23,20 +24,20 @@ import java.util.Calendar;
 
 /**
  * The MIT License (MIT)
- *
+ * <p>
  * Copyright (c) 2015 Ramesh M Nair
  * Edit: Asi Mugrabi
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -184,6 +185,21 @@ public class WeekFragment extends Fragment {
         for (TextView dayTv : mTextViewArray) {
             dayTv.setText(Integer.toString(mDateInWeekArray.get(dayOfWeek).getDayOfMonth()));
             if (eventDays != null) {
+                // TODO: Asi delete ==============
+                boolean showMsg = false;
+                for (LocalDateTime dt : eventDays) {
+                    if (dt == null) {
+                        showMsg = true;
+                        break;
+                    }
+                }
+                if (mDateInWeekArray.get(dayOfWeek) == null) {
+                    showMsg = true;
+                }
+                if (showMsg) {
+                    Toast.makeText(getContext(), "Asi BugTest: Check that events (dots) are displayed correctly for the near weeks", Toast.LENGTH_LONG).show();
+                }
+                ////// TODO: delete ===========
                 if (CalUtil.isDayInList(mDateInWeekArray.get(dayOfWeek), eventDays)) {
                     mImageViewArray[dayOfWeek].setImageResource(eventColorDrawable);
                 }

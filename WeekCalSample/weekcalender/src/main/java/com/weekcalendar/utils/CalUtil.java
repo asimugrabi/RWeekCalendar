@@ -1,10 +1,10 @@
 package com.weekcalendar.utils;
 
+import android.content.Context;
+
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import org.joda.time.LocalDateTime;
-
-import android.content.Context;
 
 import java.util.Calendar;
 import java.util.List;
@@ -12,20 +12,20 @@ import java.util.List;
 
 /**
  * The MIT License (MIT)
- *
+ * <p>
  * Copyright (c) 2015 Ramesh M Nair
  * Edit: Asi Mugrabi
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -61,12 +61,14 @@ public class CalUtil {
     }
 
     public static boolean isSameDay(LocalDateTime day1, LocalDateTime day2) {
-        return day1.getYear() == day2.getYear() && day1.getMonthOfYear() == day2.getMonthOfYear()
+        return day1 != null && day2 != null
+                && day1.getYear() == day2.getYear()
+                && day1.getMonthOfYear() == day2.getMonthOfYear()
                 && day1.getDayOfMonth() == day2.getDayOfMonth();
     }
 
     public static boolean isDayInList(LocalDateTime day, List<LocalDateTime> days) {
-        if (days == null) {
+        if (days == null || day == null) {
             return false;
         }
         for (LocalDateTime isDay : days) {
