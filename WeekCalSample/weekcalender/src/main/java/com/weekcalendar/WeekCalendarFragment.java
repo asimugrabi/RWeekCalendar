@@ -23,7 +23,6 @@ import com.weekcalendar.utils.WeekCalendarOptions;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Weeks;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -82,7 +81,7 @@ public class WeekCalendarFragment extends Fragment {
     private ViewGroup mFrameDatePicker;
     private CalenderListener mCalenderListener;
 
-    private ArrayList<LocalDateTime> mEventDays;
+    private long[] mEventDays;
 
     private static WeekCalendarFragment sWeekCalendarInstance;
 
@@ -217,6 +216,7 @@ public class WeekCalendarFragment extends Fragment {
     }
 
     Calendar mPreSelectedDate;
+
     /**
      * Set date for the week calendar to start on resume
      *
@@ -352,18 +352,9 @@ public class WeekCalendarFragment extends Fragment {
                     , "drawable"
                     , PACKAGE_NAME_VALUE));
         }
-        ArrayList<Calendar> eventDays;
-        try {
-            eventDays = (ArrayList<Calendar>) getArguments().get(ARGUMENT_EVENT_DAYS);
-        } catch (ClassCastException e) {
-            eventDays = null;
-        }
-        if (eventDays != null) {
-            mEventDays = new ArrayList<>();
-            for (Calendar eventDay : eventDays) {
-                mEventDays.add(LocalDateTime.fromCalendarFields(eventDay));
-            }
-        }
+
+
+        mEventDays = (long[]) getArguments().get(ARGUMENT_EVENT_DAYS);
         if (getArguments().containsKey(ARGUMENT_EVENT_COLOR)) {
             mEventColor = getArguments().getString(ARGUMENT_EVENT_COLOR);
         }

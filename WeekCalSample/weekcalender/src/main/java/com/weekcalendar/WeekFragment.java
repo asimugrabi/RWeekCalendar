@@ -21,6 +21,7 @@ import org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * The MIT License (MIT)
@@ -68,7 +69,7 @@ public class WeekFragment extends Fragment {
      */
     public static WeekFragment newInstance(int position, String selectorDateIndicatorValue
             , int currentDateIndicatorValue, int primaryTextColor, int primaryTextSize
-            , int primaryTextStyle, int selectorHighlightColor, ArrayList<LocalDateTime> eventDays
+            , int primaryTextStyle, int selectorHighlightColor, long[] eventDays
             , String eventColor) {
         WeekFragment f = new WeekFragment();
         Bundle b = new Bundle();
@@ -175,8 +176,14 @@ public class WeekFragment extends Fragment {
             tv.setTextColor(mPrimaryTextColor);
         }
 
-        ArrayList<LocalDateTime> eventDays = (ArrayList<LocalDateTime>) getArguments()
+        long[] eventDaysPrim  = (long[]) getArguments()
                 .getSerializable(WeekCalendarFragment.ARGUMENT_EVENT_DAYS);
+        ArrayList<LocalDateTime> eventDays  = new ArrayList<>();
+        if (eventDaysPrim != null) {
+            for (long eventDay : eventDaysPrim) {
+                eventDays.add(LocalDateTime.fromDateFields(new Date(eventDay)));
+            }
+        }
         int eventColorDrawable = getEventColorDrawable(getArguments()
                 .getString(WeekCalendarFragment.ARGUMENT_EVENT_COLOR));
 
@@ -184,22 +191,7 @@ public class WeekFragment extends Fragment {
         int dayOfWeek = 0;
         for (TextView dayTv : mTextViewArray) {
             dayTv.setText(Integer.toString(mDateInWeekArray.get(dayOfWeek).getDayOfMonth()));
-            if (eventDays != null) {
-                // TODO: Asi delete ==============
-                boolean showMsg = false;
-                for (LocalDateTime dt : eventDays) {
-                    if (dt == null) {
-                        showMsg = true;
-                        break;
-                    }
-                }
-                if (mDateInWeekArray.get(dayOfWeek) == null) {
-                    showMsg = true;
-                }
-                if (showMsg) {
-                    Toast.makeText(getContext(), "Asi BugTest: Check that events (dots) are displayed correctly for the near weeks", Toast.LENGTH_LONG).show();
-                }
-                ////// TODO: delete ===========
+            if (!eventDays.isEmpty()) {
                 if (CalUtil.isDayInList(mDateInWeekArray.get(dayOfWeek), eventDays)) {
                     mImageViewArray[dayOfWeek].setImageResource(eventColorDrawable);
                 }
